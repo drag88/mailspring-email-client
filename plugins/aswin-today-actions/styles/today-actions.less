@@ -1,0 +1,261 @@
+@import "ui-variables";
+
+.column-AswinTodayActions {
+  border-left: 1px solid @border-color-divider;
+  background: @background-primary;
+  .injected-component { height: 100%; }
+}
+.taa-pane {
+  height: 100%; min-height: 0; display: flex; flex-direction: column;
+  color: @text-color; background: @background-primary; font-family: @font-family; font-size: @font-size;
+  box-sizing: border-box;
+  *, *::before, *::after { box-sizing: border-box; }
+  button, input, textarea { font: inherit; }
+  .taa-icon { display: inline-block; flex-shrink: 0; vertical-align: middle; }
+  .taa-link, .taa-join, .taa-primary, .taa-icon-heading { display: inline-flex; align-items: center; gap: 6px; }
+  button { cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid @component-active-color; outline-offset: 2px;
+  }
+  .taa-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 18px 16px; border-bottom: 1px solid @border-color-divider;
+    h1 { color: @text-color-heading; font-size: @font-size-large; font-weight: 600; margin: 0 0 6px; }
+    p { margin: 0; color: @text-color-subtle; font-size: @font-size-small; }
+  }
+  .taa-close { color: @text-color-subtle; background: transparent; border: 0; font-size: 22px; padding: 4px 8px; }
+  .taa-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 0 18px 20px; }
+  .taa-footer { flex-shrink: 0; padding: 8px 16px; border-top: 1px solid @border-color-divider; color: @text-color-subtle; font-size: @font-size-smaller; }
+  .taa-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 20px; }
+  .taa-month { padding: 18px 0 15px; border-bottom: 1px solid @border-color-divider; }
+  .taa-month-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .taa-month-controls { display: flex; align-items: center; gap: 9px; }
+  .taa-month-arrow { background: transparent; border: 0; color: @text-color-subtle; font-size: 20px; width: 23px; height: 28px; padding: 0; border-radius: 4px; }
+  .taa-month-arrow:hover { color: @text-color; background: @background-secondary; }
+  .taa-weekdays, .taa-month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+  .taa-weekdays { margin-bottom: 6px; font-size: @font-size-smaller; text-align: center; color: @text-color-very-subtle; }
+  .taa-weekdays span { padding: 4px 0; }
+  .taa-day { height: 32px; padding: 0; background: transparent; border: 1px solid transparent; border-radius: 5px; color: @text-color; font-size: @font-size-small; }
+  .taa-day:hover { background: @background-secondary; }
+  .taa-other-month { color: @text-color-very-subtle; }
+  .taa-today { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+  .taa-selected-day { background: @background-secondary; border-color: @border-color-primary; }
+  h2 { color: @text-color-heading; font-size: @font-size; font-weight: 600; margin: 0; }
+  h3 { font-size: @font-size-smaller; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; margin: 16px 0 8px; color: @text-color-subtle; }
+  .taa-link { color: @text-color-subtle; background: transparent; border: 0; padding: 5px 0; font-size: @font-size-small; text-align: left; }
+  .taa-link:hover { color: @text-color; text-decoration: underline; }
+  .taa-muted { color: @text-color-subtle; }
+  .taa-zone { font-size: @font-size-smaller; margin: 6px 0 4px; color: @text-color-very-subtle; }
+  .taa-event-list { margin: 0; padding: 0; list-style: none; }
+  .taa-event { border: 0; border-bottom: 1px solid @border-color-divider;
+    padding: 15px 0; margin: 0; overflow-wrap: anywhere; }
+  .taa-event:last-child { border-bottom: 0; }
+  .taa-event-open { display: block; position: relative; width: 100%; padding: 0 18px 0 0;
+    text-align: left; color: inherit; background: transparent; border: 0; border-radius: 3px; }
+  .taa-event-open:hover .taa-event-title { text-decoration: underline; }
+  .taa-event-open .taa-event-title, .taa-event-open .taa-event-meta { display: block; }
+  .taa-event-disclosure { position: absolute; right: 1px; top: 16px; font-size: 17px; color: @text-color-very-subtle; }
+  .taa-event-details { margin-top: 12px; padding-top: 10px; border-top: 1px solid @border-color-divider; font-size: @font-size-small; line-height: 1.6; }
+  .taa-event-details p { margin: 0 0 9px; }
+  .taa-event-notes { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 240px; overflow-y: auto; }
+  .taa-attendees summary { cursor: pointer; color: @text-color-subtle; }
+  .taa-attendees ul { margin: 7px 0 0; padding-left: 17px; color: @text-color-subtle; }
+  .taa-past { opacity: .72; }
+  .taa-now .taa-event-title { font-weight: 600; }
+  .taa-event-time { font-size: @font-size-small; color: @text-color-subtle; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .taa-event-title { font-size: @font-size; font-weight: 500; line-height: 1.55; margin: 7px 0 3px; }
+  .taa-event-meta { color: @text-color-subtle; font-size: @font-size-smaller; line-height: 1.4; }
+  .taa-location { margin-top: 4px; }
+  .taa-event-open .taa-location { display: flex; align-items: flex-start; gap: 5px; }
+  .taa-location .taa-icon { margin-top: 2px; }
+  .taa-location span { white-space: pre-line; }
+  .taa-calendar-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0 8px; }
+  .taa-calendar-tools .taa-google-meeting { padding: 0; background: transparent; }
+  .taa-calendar-tools .taa-primary { padding: 5px 8px; }
+  .taa-meeting-display { padding: 10px 0; border-bottom: 1px solid @border-color-divider; margin-bottom: 5px; font-size: @font-size-small; }
+  .taa-compact-setting { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+  .taa-height-setting { display: block; }
+  .taa-height-setting > span { display: flex; justify-content: space-between; color: @text-color-subtle; margin-bottom: 4px; }
+  .taa-height-setting input { width: 100%; accent-color: @component-active-color; }
+  .taa-event-viewport { overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; overscroll-behavior: contain; padding-right: 4px; }
+  .taa-compact {
+    .taa-event { padding: 9px 0; }
+    .taa-event-title { margin: 4px 0 2px; line-height: 1.35; }
+    .taa-event-time { gap: 4px 7px; }
+    .taa-event-disclosure { top: 13px; }
+    .taa-join { margin-top: 6px; padding: 4px 8px; }
+    .taa-location { margin-top: 3px; }
+    .taa-event:not(.taa-event-expanded) .taa-event-title,
+    .taa-event:not(.taa-event-expanded) .taa-location span {
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+    }
+  }
+  .taa-badge { background: @background-secondary; color: @text-color; border: 1px solid @border-color-divider; border-radius: 4px; padding: 2px 5px; font-size: @font-size-smaller; }
+  .taa-pending { font-size: @font-size-smaller; color: @text-color-very-subtle; }
+  .taa-join, .taa-primary { background: @background-secondary; color: @text-color; border: 1px solid @border-color-primary; border-radius: 6px; padding: 7px 11px; }
+  .taa-join:hover, .taa-primary:hover { background: color-mix(in srgb, @text-color 7%, @background-secondary); }
+  .taa-join { margin-top: 9px; font-size: @font-size-small; }
+  .taa-refresh { margin-top: 6px; font-size: @font-size-smaller; }
+  .taa-actions { border-top: 1px solid @border-color-divider; margin-top: 20px; }
+  .taa-meeting-resizer {
+    position: relative; height: 18px; margin-top: 8px; cursor: ns-resize;
+    touch-action: none; user-select: none; display: flex; align-items: center; justify-content: center;
+    &::before { content: ''; position: absolute; left: 0; right: 0; top: 8px; height: 1px; background: @border-color-divider; }
+    .taa-resize-grip { position: relative; width: 28px; height: 4px; border-radius: 3px;
+      background: @text-color-very-subtle; }
+    &:hover .taa-resize-grip, &:focus-visible .taa-resize-grip { background: @component-active-color; }
+  }
+  .taa-meeting-resizer + .taa-actions { border-top: 0; margin-top: 0; }
+  .taa-meeting-resizer + .taa-actions .taa-section-heading { margin-top: 5px; }
+  .taa-section-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 5px 0;
+    border: 0; background: transparent; color: @text-color-heading; font-weight: 600; text-align: left; }
+  .taa-section-toggle:hover { color: @text-color; }
+  .taa-disclosure { display: inline-flex; transition: transform 120ms ease; }
+  .taa-disclosure.taa-expanded { transform: rotate(90deg); }
+  .taa-action-count { font-size: @font-size-smaller; font-weight: 400; color: @text-color-subtle; }
+  .taa-actions-content[hidden], .taa-calendar-content[hidden] { display: none; }
+  .taa-filters { display: flex; gap: 3px; margin: 14px 0; padding: 3px; border: 1px solid @border-color-divider; border-radius: 7px; background: @background-secondary; }
+  .taa-filter { flex: 1; border: 1px solid transparent; border-radius: 4px; padding: 6px 7px;
+    color: @text-color-subtle; background: transparent; font-size: @font-size-smaller; white-space: nowrap; }
+  .taa-filter.active { color: @text-color; border-color: @border-color-divider; background: @background-primary; }
+  .taa-overdue { color: @color-error; }
+  .taa-action-card { padding: 11px 0; border-bottom: 1px solid @border-color-divider; }
+  .taa-action-top { display: flex; gap: 8px; align-items: flex-start; }
+  .taa-action-top input { margin-top: 2px; accent-color: @component-active-color; flex-shrink: 0; }
+  .taa-action-title { font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
+  .taa-done { color: @text-color-subtle; text-decoration: line-through; }
+  .taa-action-meta { padding-left: 22px; color: @text-color-subtle; font-size: @font-size-smaller; margin: 5px 0; }
+  .taa-action-notes { padding-left: 22px; margin: 5px 0; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .taa-action-controls { display: flex; justify-content: space-between; align-items: center; padding-left: 22px; font-size: @font-size-smaller; }
+  .taa-empty { color: @text-color-subtle; font-size: @font-size-small; line-height: 1.65; padding: 14px 0; }
+  .taa-empty p { margin: 0 0 6px; }
+  .taa-notice { background: @background-secondary; padding: 10px; border-radius: 6px; margin: 12px 0; line-height: 1.5; }
+  .taa-error { border-left: 3px solid @color-error; }
+  .taa-editor { background: @background-secondary; padding: 12px; border-radius: 8px; margin: 14px 0; }
+  .taa-editor-heading { font-size: @font-size; font-weight: 600; margin-bottom: 10px; }
+  .taa-editor label { display: block; font-size: @font-size-small; color: @text-color-subtle; margin: 9px 0; }
+  .taa-editor input, .taa-editor textarea { width: 100%; display: block; border: 1px solid @border-color-divider;
+    border-radius: 4px; padding: 7px; margin-top: 4px; background: @background-primary; color: @text-color; }
+  .taa-editor textarea { resize: vertical; min-height: 55px; }
+  .taa-form-row { display: flex; gap: 8px; }
+  .taa-form-row label { flex: 1; min-width: 0; }
+  .taa-source-preview { font-size: @font-size-smaller; color: @text-color-subtle; overflow-wrap: anywhere; }
+  .taa-source-preview .taa-link { display: block; }
+  .taa-editor .taa-reminder-check { display: flex; align-items: center; gap: 7px; margin: 13px 0 8px; }
+  .taa-editor .taa-reminder-check input { display: inline-block; width: auto; margin: 0; }
+  .taa-reminder-hint { display: block; font-size: @font-size-smaller; color: @text-color-subtle; line-height: 1.5; margin-top: 6px; }
+  .taa-reminder-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px;
+    align-items: center; font-size: @font-size-smaller; color: @text-color-subtle; margin: 8px 0 12px; }
+  .taa-reminder-info .taa-link { font-size: inherit; }
+  .taa-action-reminder { padding-left: 22px; font-size: @font-size-smaller; color: @text-color-subtle; margin: 7px 0; line-height: 1.5; }
+  .taa-reminder-due { color: @text-color; font-weight: 600; }
+  .taa-snooze-controls { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 3px; }
+  .taa-snooze-controls .taa-link { font-size: inherit; }
+  .taa-form-controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+  .taa-secondary { border: 1px solid @border-color-divider; color: @text-color; background: transparent; border-radius: 5px; padding: 6px 10px; }
+}
+.taa-toggle { margin: 0 6px; font-size: @font-size-small; }
+.taa-add-button { font-size: @font-size-small; }
+.taa-google-meeting {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;
+  padding: 10px 18px; color: @text-color; background: @background-primary;
+  font-family: @font-family; font-size: @font-size-small;
+  .taa-primary { display: inline-flex; align-items: center; gap: 6px; font: inherit;
+    background: @background-secondary; color: @text-color; border: 1px solid @border-color-primary;
+    border-radius: 6px; padding: 7px 11px; cursor: pointer; }
+  .taa-primary:hover { background: @background-tertiary; }
+  .taa-primary:focus-visible { outline: 2px solid @component-active-color; outline-offset: 2px; }
+  .taa-meeting-hint { color: @text-color-subtle; font-size: @font-size-smaller; }
+  .taa-icon { flex-shrink: 0; }
+}
+.taa-pane .taa-google-meeting { padding: 8px 0 10px; }
+
+.taa-grouped-mail-rows {
+  background-image: none !important;
+  .taa-mail-section {
+    position: absolute; left: 0; right: 0; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 18px; box-sizing: border-box;
+    background: @background-secondary; color: @text-color-subtle;
+    border-bottom: 1px solid @border-color-divider; border-top: 1px solid @border-color-divider;
+    font-family: @font-family; font-size: @font-size; font-weight: 600;
+    cursor: default; user-select: none;
+  }
+  .taa-mail-section-count { font-weight: 400; font-size: @font-size-small; }
+}
+
+// Mailbox rail retains Mailspring's native folder tree and saved expanded width.
+.taa-mail-sidebar-controls {
+  height: 34px;
+  padding: 4px 14px;
+  display: flex;
+  align-items: center;
+}
+.taa-mail-sidebar-toggle, .taa-mail-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px;
+  font: inherit;
+  font-size: 12px;
+  &:hover { background: fade(@text-color, 9%); }
+  &:focus-visible { outline: 2px solid @text-color; outline-offset: 1px; }
+}
+.taa-mail-sidebar .account-switcher { top: 12px; }
+.taa-mail-sidebar [role='treeitem'] > .item-container > .taa-mail-label .icon .content-mask {
+  background-color: var(--taa-label-color) !important;
+}
+.taa-mail-sidebar [role='treeitem'] > .item-container > .taa-mail-label .name {
+  color: var(--taa-label-color);
+}
+.taa-mail-sidebar [role='treeitem'][aria-selected='true'] > .item-container > .taa-mail-label .name { color: inherit; }
+.taa-mail-rail {
+  .account-sidebar { overflow-x: hidden; }
+  .taa-mail-sidebar-controls { padding: 4px 8px; }
+  .account-switcher { right: 9px; }
+  .outline-view .heading {
+    height: 14px;
+    min-height: 14px;
+    padding: 0;
+    margin: 4px 10px;
+    border-top: 1px solid fade(@text-color, 12%);
+    .text, .add-item-button, .collapse-button { display: none; }
+  }
+  .item-container { position: relative; display: block; margin: 0 !important; padding: 0 !important; }
+  .item {
+    position: relative;
+    min-height: 34px;
+    margin: 1px 8px !important;
+    padding: 7px 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    .icon { margin: 0 !important; width: 22px; flex-shrink: 0; }
+    .name, .item-action-button { display: none; }
+    .item-count-box {
+      position: absolute;
+      top: 1px; right: 1px;
+      padding: 0 2px;
+      min-width: 10px;
+      font-size: 9px;
+      line-height: 12px;
+      border-radius: 4px;
+    }
+  }
+  .disclosure-triangle { position: absolute; left: 0; top: 11px; z-index: 1; }
+  .item-children { padding-left: 0 !important; margin-left: 0 !important; }
+  [role='treeitem']:focus-visible { outline: 2px solid @text-color; outline-offset: -2px; }
+  .item-input { width: 100%; min-width: 0; }
+}
+.taa-mail-sync { flex-shrink: 0; margin: 8px auto; position: relative; }
+.taa-mail-sync-count { font-size: 9px; position: absolute; right: -5px; top: -2px; }
+body.taa-mail-sidebar-collapsed .sheet-toolbar .item-container[data-location='RootSidebar'] { min-width: 72px; }
+.taa-mail-rail .scrollbar-track { width: 6px; background: transparent; }
+.taa-mail-rail .scrollbar-handle { background: fade(@text-color, 22%) !important; box-shadow: none !important; border: 0; }
