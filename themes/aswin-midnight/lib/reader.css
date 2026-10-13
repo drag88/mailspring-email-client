@@ -1,0 +1,61 @@
+/* Applied only to Mailspring's rendered document while dark reading is selected. */
+html body {
+  filter: none !important;
+  background: #1c2330 !important;
+  color: #e2e8f1 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+  -webkit-font-smoothing: antialiased;
+}
+html body #inbox-html-wrapper,
+html body #inbox-html-wrapper.has-background,
+html body #inbox-plain-wrapper {
+  background: #1c2330 !important;
+  color: #e2e8f1 !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+#inbox-html-wrapper * {
+  color: #e2e8f1 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: #46556b !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+#inbox-html-wrapper :is(div,p,span,font,td,th,li,section,article,blockquote) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: 1.65 !important;
+}
+html body #inbox-html-wrapper :is(a,a *,a:visited),
+html body #inbox-plain-wrapper a { color: #a6c8f5 !important; }
+html body #inbox-html-wrapper a:hover { color: #c5dcfa !important; text-decoration: underline; }
+#inbox-html-wrapper :is(a,button,[role=button]) { border-color: #7f9bbf !important; }
+#inbox-html-wrapper h1 { font-size: 23px !important; line-height: 1.35 !important; }
+#inbox-html-wrapper h2 { font-size: 20px !important; line-height: 1.4 !important; }
+#inbox-html-wrapper :is(h3,h4) { font-size: 17px !important; line-height: 1.45 !important; }
+#inbox-html-wrapper :is(h5,h6) { font-size: 15px !important; }
+#inbox-html-wrapper :is(small,sub,sup) { font-size: 13px !important; }
+#inbox-html-wrapper blockquote { border-left: 2px solid #52637b !important; padding-left: 12px; }
+#inbox-html-wrapper blockquote :is(p,span,div) { color: #b5c0d0 !important; }
+#inbox-html-wrapper th { background-color: #29364a !important; color: #f2f5fa !important; }
+#inbox-html-wrapper tbody tr:nth-child(even) { background-color: #202a39 !important; }
+#inbox-html-wrapper :is(pre,code,kbd,samp) {
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+  font-size: 13.5px !important;
+  color: #dbe6f7 !important;
+}
+#inbox-html-wrapper :is(hr,table,td,th) { border-color: #46556b !important; }
+html body img,
+html body #inbox-html-wrapper img { filter: none !important; }
+html body :is(search-match,.search-match) {
+  background-color: #624f28 !important;
+  color: #fff2cf !important;
+}
+html body :is(search-match.current-match,.search-match.current-match) { background-color: #846032 !important; }
+html body .inline-download-prompt {
+  color: #e2e8f1 !important; background-color: #29364a !important;
+  border-color: #52637b !important;
+}
