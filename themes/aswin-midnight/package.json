@@ -1,0 +1,13 @@
+{
+  "name": "aswin-midnight",
+  "displayName": "Midnight — Aswin",
+  "version": "1.0.3",
+  "theme": "ui",
+  "main": "./lib/main.js",
+  "description": "A calm charcoal Mailspring theme with readable dark email bodies and original-colour fallback.",
+  "license": "MIT",
+  "engines": { "mailspring": ">=1.26.0 <2.0.0" },
+  "windowTypes": { "default": true, "popout": true },
+  "isIdentityRequired": false,
+  "scripts": { "test": "node --test test/*.test.js" }
+}
