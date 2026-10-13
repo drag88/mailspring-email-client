@@ -1,0 +1,8 @@
+{
+  "name": "mailspring-email-client-customisations",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node --test plugins/aswin-today-actions/test/*.test.js themes/aswin-midnight/test/*.test.js"
+  }
+}
