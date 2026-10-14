@@ -2,25 +2,29 @@
 const STYLE_ID = 'aswin-midnight-reader';
 const MODE_KEY = 'core.reading.emailRenderMode';
 const { ORIGINAL_CSS, repairOriginalColours, restoreOriginalColours } = require('./original-colours');
+const { collapseQuoteHistory, restoreQuoteHistory } = require('./quote-history');
 
 class DarkReader {
   constructor(api, appEnv, css, WeakReference = WeakRef) {
     this.api = api; this.appEnv = appEnv; this.css = css; this.WeakReference = WeakReference;
     this.documents = new Set(); this.inlineStyles = new WeakMap(); this.originalRepairs = new WeakMap(); this.active = false; this.userChangedMode = false;
-    this.extension = { name: 'AswinMidnightReader', renderedMessageBodyIntoDocument: ({ document, iframe }) => {
+    this.extension = { name: 'AswinMidnightReader', renderedMessageBodyIntoDocument: ({ document, message }) => {
       if (!this.active) return;
       // Discard stale frame documents while retaining only weak references.
       this.sweep();
       if (![...this.documents].some(ref => ref.deref() === document))
         this.documents.add(new this.WeakReference(document));
       this.apply(document);
+      // Leave Mailspring's recognised quotes and its native expansion control alone.
+      if (message && !this.api.QuotedHTMLTransformer.hasQuotedHTML(message.body || ''))
+        collapseQuoteHistory(document);
     } };
   }
   dark() { return this.appEnv.config.get(MODE_KEY) === 'dark'; }
   apply(document) {
     if (!document?.documentElement) return;
     const existing = document.getElementById(STYLE_ID);
-    if (!this.active) { existing?.remove(); this.restoreInline(document); restoreOriginalColours(this.originalRepairs.get(document)); this.originalRepairs.delete(document); return; }
+    if (!this.active) { existing?.remove(); this.restoreInline(document); restoreOriginalColours(this.originalRepairs.get(document)); this.originalRepairs.delete(document); restoreQuoteHistory(document); return; }
     restoreOriginalColours(this.originalRepairs.get(document)); this.originalRepairs.delete(document);
     if (this.dark()) this.normalizeInline(document);
     else this.restoreInline(document);

@@ -1,13 +1,21 @@
 {
   "name": "aswin-midnight",
-  "displayName": "Midnight — Aswin",
-  "version": "1.0.3",
+  "displayName": "Midnight \u2014 Aswin",
+  "version": "1.0.4",
   "theme": "ui",
   "main": "./lib/main.js",
   "description": "A calm charcoal Mailspring theme with readable dark email bodies and original-colour fallback.",
   "license": "MIT",
-  "engines": { "mailspring": ">=1.26.0 <2.0.0" },
-  "windowTypes": { "default": true, "popout": true },
+  "engines": {
+    "mailspring": ">=1.26.0 <2.0.0"
+  },
+  "windowTypes": {
+    "default": true,
+    "popout": true
+  },
   "isIdentityRequired": false,
-  "scripts": { "test": "node --test test/*.test.js" }
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:browser": "node test/run-quote-history-browser.js"
+  }
 }

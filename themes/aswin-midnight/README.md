@@ -44,3 +44,9 @@ Future Mailspring versions can change the extension or rendering APIs. Switching
 ## Development
 
 Run `node --test test/*.test.js`. The source uses the host exports and built-in Node modules without a build step.
+
+## Quoted history
+
+Version 1.0.4 folds email quote blocks that Mailspring does not recognise because of trailing signatures. The latest reply, trailing signature and replies between quoted blocks stay visible. Click **Show quoted history** to expand and **Hide quoted history** to collapse again. Native recognised quotes keep their existing three-dot control. This display fallback is active while Midnight is selected and never changes saved email contents. Ordinary unmarked quotations, quote-only messages and unrecognised plain-text history remain visible.
+
+Run `npm run test:browser` with Vercel Agent Browser available to verify the 13 real-browser quote and reader integration checks.

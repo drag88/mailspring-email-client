@@ -7,7 +7,7 @@ function setup(mode = 'light') {
   const listeners = new Set(), registrations = new Set();
   const config = { get: () => current, set(key, value) { assert.equal(key, MODE_KEY); current = value; for (const fn of listeners) fn(); },
     onDidChange(key, fn) { assert.equal(key, MODE_KEY); listeners.add(fn); return { dispose: () => listeners.delete(fn) }; } };
-  const api = { ExtensionRegistry: { MessageView: { register: e => registrations.add(e), unregister: e => registrations.delete(e) } } };
+  const api = { QuotedHTMLTransformer: { hasQuotedHTML: () => false }, ExtensionRegistry: { MessageView: { register: e => registrations.add(e), unregister: e => registrations.delete(e) } } };
   const reader = new DarkReader(api, { config }, 'html body { filter:none !important }');
   return { reader, config, listeners, registrations, mode: () => current };
 }
@@ -60,7 +60,7 @@ test('sender inline important colours are reversible and later extension changes
   const properties=new Map([['color',['black','important']],['font-size',['10px','important']]]);
   const element={style:{getPropertyPriority:p=>properties.get(p)?.[1]||'',getPropertyValue:p=>properties.get(p)?.[0]||'',
     setProperty(p,v,priority){properties.set(p,[v,priority]);}}};
-  doc.querySelectorAll=()=>[element];reader.extension.renderedMessageBodyIntoDocument({document:doc});
+  doc.querySelectorAll=selector=>selector==='#inbox-html-wrapper [style]'?[element]:[];reader.extension.renderedMessageBodyIntoDocument({document:doc});
   assert.equal(element.style.getPropertyPriority('color'),'');
   element.style.setProperty('font-size','16px','');
   config.set(MODE_KEY,'light');assert.equal(element.style.getPropertyPriority('color'),'important');
