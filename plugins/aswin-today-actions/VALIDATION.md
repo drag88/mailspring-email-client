@@ -1,85 +1,37 @@
-# Validation — version 0.1.13
+# Today + Actions 0.1.13 validation
 
-Validated on 14 October 2026 against macOS Apple Silicon Mailspring **1.26.0 / 3b46a5b1**, the latest upstream release at preparation time. Fresh GitHub source baseline: `18b38dc`. Plugin baseline 0.1.12; retained the exact installed Midnight 1.0.4 theme with collapsible quoted history.
+Validated on **14 October 2026** against **Mailspring 1.26.0 / 3b46a5b1 on macOS Apple Silicon**. The release retains Midnight 1.0.4 and the existing local action format.
 
-- **61 unit tests passed** (52 plugin, 9 theme). New checks cover grouped/negative/invalid amounts, currency minor units, same-currency offline behavior, rate payload validation, timezone date rollover, winter/summer offsets, New York and Lord Howe missing/repeated times, edited-input cancellation, request supersession, unmount cleanup, and recoverable request failure.
-- **10 isolated browser interaction checks passed**: date rollover, DST gap, repeated-hour warning/explicit later choice, collapse, tab expansion/input retention, currency grouped decimal input, observation-date display, swap result invalidation, and no horizontal overflow. Synthetic previews visually checked at 1440x900 and 390x844; currency and timezone controls remain usable.
-- **13 real-browser quoted-history regression checks passed** for retained Midnight 1.0.4.
-- **Native React/calendar integration harness passed** using bundled dependencies and synthetic data. Checked converter registry location, activation idempotence, full cleanup, exclusion from calendar window, and existing action, reminder, meeting, draft and room behavior. The harness deliberately lacks the mailbox sidebar registry mock; that optional integration is covered by existing unit checks and the visible live mailbox rail.
-- **Light/dark LESS compilation passed**; all 19 runtime JavaScript files passed syntax checks. No lint or typecheck command is configured.
-- **Live Mailspring:** installed 0.1.13 and reloaded. With the existing email open, Tools appeared beneath the reader, while the right Today + Actions calendar/actions remained present. Latest reply, signature and quoted-history disclosure remained visible. Currency: 100 SGD produced 78.13 USD, using Frankfurter rate 0.78126 dated 2026-10-14. No amount or mailbox data was sent to the rate service.
-- Saved action-file SHA-256 was unchanged. Runtime source matches the prepared version. Existing theme was retained.
+## Automated checks
 
-Live timezone interaction was stopped when computer-use detected user activity; timezone behavior is verified by unit, native React render and real-browser interaction checks. Live list/splitVertical modes were not switched; the component uses their shared native MessageList location. No calendar meeting, action or reminder was edited for testing. An app shortcut briefly opened a blank reply draft; that generated draft was immediately removed, and the original thread returned to three messages. No email was sent. Real-mailbox screenshots were inspected internally and are not included in the source or downloads.
+| Check | Result |
+| --- | --- |
+| Repository unit suite | 61 passed: 52 plugin tests and 9 theme tests. |
+| Converter browser interactions | 10 passed, including date rollover, DST gaps, explicit repeated-hour selection, collapse/tab behavior, grouped decimal amounts, observation-date display, swap invalidation and narrow-width overflow. |
+| Quoted-history browser checks | 13 passed for Midnight 1.0.4. |
+| Native integration | Bundled React/calendar harness passed, including converter registration, activation/deactivation cleanup, exclusion from the calendar window and existing action, reminder and meeting behavior. |
+| Styles and syntax | Light/dark LESS compilation and syntax checks for all 19 runtime JavaScript files passed. |
+| Independent code review | No actionable defects found. |
 
-Currency rates are indicative daily observations, exclude fees, and may be older on non-publication days. They require internet access; timezone conversion and same-currency arithmetic work offline. IANA timezone rules follow the installed app runtime. Inputs/results and collapse state are session-only. No new package dependencies.
+Currency unit checks cover grouped and negative amounts, invalid input, currency minor units, same-currency offline behavior, rate payload validation, changed-input cancellation, request supersession and unmount cleanup. Timezone checks cover winter/summer offsets and missing/repeated times in New York and Lord Howe.
 
-## Earlier version validation
+The converter previews were visually checked at 1440×900 and 390×844. The development harnesses use the installed application bundle and synthetic fixtures; they are not packaged as portable repository tests. No lint or typecheck command is configured.
 
-### Version 0.1.11
+## Live application checks
 
-Validated on 12 October 2026 against the installed macOS Apple Silicon Mailspring **1.26.0** bundle.
+Version 0.1.13 was installed and reloaded in Mailspring. With an email open, Tools appeared below the reader while the right calendar/actions pane remained visible. The latest reply, signature and quoted-history disclosure remained visible.
 
-## Passed
+A live conversion of 100 SGD returned 78.13 USD using a rate of 0.78126 dated 2026-10-14. The saved action-file SHA-256 was unchanged. Installed plugin files matched the release source.
 
-- **42 automated unit tests**, all passing. New drag coverage checks pointer capture, cumulative movement, save-on-release, unrelated pointer rejection, cancel/unmount cleanup, minimum/maximum bounds, keyboard adjustment and reset. Other coverage checks hybrid physical locations with online links, online-only location cleanup, display-setting validation, height bounds and preference persistence. Existing tests cover browser timer receiver binding, reminder time validation/timezones/DST, legacy-file preservation, persistence/restart/deduplication, rescheduling, snooze, dismissal, completion, failed notification retry, obsolete in-flight notifications, stale callbacks, listener/timer cleanup and failed-write behavior, alongside storage, calendar, link, layout and host React checks.
-- **Native calendar integration harness**, using Mailspring's actual bundled occurrence-expansion helper, calendar date utilities, ICS helpers and dependencies. Synthetic fixtures passed for a daily recurrence starting in 2020, EXDATE exclusions, multi-day all-day events, exclusive all-day end dates, cancellation and tentative status.
-- **Native React integration harness**, using Mailspring's actual React and ReactDOM server renderer, with mocked app registries/database/electron APIs and synthetic calendar/email fixtures. Activation registers three components once; opening the form on thread A then focusing thread B preserves A; saving, completing and reopening work; email navigation verifies the account; the calendar button dispatches the native command; deactivation removes registrations and the added column. User text is escaped during rendering.
-- The stylesheet compiles with the installed app's LESS compiler and active dark theme variables; dark background and text palette values were checked. All plugin JavaScript passes syntax checks.
-- ZIP contents and integrity checked after packaging. No copied Mailspring application code or dependencies are bundled.
+Live timezone interaction stopped when user activity was detected. Its calculations and controls were checked through unit tests, native React rendering and browser interaction tests. Live list and splitVertical layouts were not switched; both use the shared native MessageList location.
 
-## Live checks and remaining limits
+No calendar meeting, action or reminder was edited for validation, and no email was sent. A shortcut briefly opened a blank reply draft; that generated draft was immediately removed. Real-mailbox screenshots were inspected internally and are excluded from the repository and downloads.
 
-Version 0.1.11 was installed and reloaded after the computer connection was restored. Installed source and styles matched the workspace. October 14 was restored as the selected calendar day. Dragging the grip above Actions upward changed the list from 320px to 240px; dragging downward changed it to 380px. Screenshots showed the list and Actions divider moving together. The local configuration stored compact=true,height=380 after release. Double-click reset visibly restored 320px. The action-file checksum remained unchanged. Native React checks also confirmed live resize updates the fixed viewport height without saving on each move, and commits save the chosen height. Keyboard resize, cancellation and unmount cleanup were checked in unit tests. Real-mailbox screenshots were not saved or packaged.
+## Operating limits
 
-Version 0.1.10 was installed through Mailspring's plugin installer and the main window reloaded. Installed JavaScript/style files and version matched the workspace. The live CLM meeting displayed Development Lab 3 together with Join meeting. Display opened the Compact meetings checkbox and height slider. Keyboard Home/End changed the slider to 180px/720px, and screenshots confirmed the bounded list shrank/expanded independently of Actions. Compact was toggled off/on and the more spaced/compact rows verified. The final view uses compact mode at 320px with Display closed; the local configuration contains those saved values. The actions.json SHA256 was unchanged throughout installation and verification. No events, rooms, invitations, action records or reminder schedules were edited; no meeting was joined. Mailbox screenshots were used for internal inspection only.
+- Different-currency rates require internet. Rates are indicative daily observations, exclude fees and may be older on non-publication days.
+- Timezone conversion and same-currency arithmetic work offline. Timezone rules follow the installed app runtime.
+- Converter inputs, results and collapsed state are session-only.
+- Calendar, grouped-mail and reader integrations may need changes after a Mailspring update.
 
-Native ICS fixtures cover room LOCATION plus conferencing metadata, Google room-resource attendees without CUTYPE, resource CN deduplication, declined resource exclusion and exception-specific rooms in recurring series. Original stored ICS is unchanged. Native React checks cover coexistence of room text and Join, independent list-height changes and preference restoration after deactivate/reactivate. The grouped-mail integration and Midnight LESS checks passed.
-
-Version 0.1.0 was installed by the user. Once computer access became available, its startup error was confirmed in the live developer console: “Cannot find module 'react'”. Version 0.1.1 corrects this dependency path and adds a regression test. Version 0.1.1 was installed successfully, and the live sidebar displayed events from the user's synced calendar with Asia/Singapore time. The toolbar toggle and + Action button appeared. Version 0.1.2 changes the stylesheet to resolve the active theme and explicitly sets heading colours. Version 0.1.2 was installed and the main mail window reloaded. The live sidebar matched the current dark theme with visible headings, calendar cards and filters. Today's calendar populated in Asia/Singapore, and + New opened title/owner/due date/notes fields with Me and the local current date. Cancel closed the editor without saving. Live task persistence, meeting joining, drag-resizing and source email navigation were not exercised; automated tests cover the underlying logic.
-
-The calendar adapter uses a private helper supplied by Mailspring 1.26.0. Future app versions may require an adapter update. No real mailbox data was used in the tests.
-
-## First in-app check
-
-1. Install the extracted folder using Developer → Install a Plugin and restart if necessary.
-2. Open the native Calendar once so supported account calendars can sync, then use the Today + Actions toolbar toggle.
-3. Compare today's events and timezone with the native calendar; resize and hide/show the pane.
-4. Select an email, click + Action, enter a title/owner/due date/notes and save. Switch email while editing to confirm the original source remains linked.
-5. Open the source email, complete the action, reopen it under Done, then restart Mailspring to confirm it persists.
-
-If calendar loading fails, the sidebar shows an explanation and local actions remain available. Removing the plugin retains the action data.
-
-Version 0.1.3: native React/calendar integration checks and dark-theme LESS compilation passed after visual refinements. No task or email mutation was made for visual validation.
-
-Live version 0.1.3 installed and reloaded: neutral flat meeting rows, no coloured card edges, readable dark-theme text, single-calendar name deduplication and neutral segmented action filters visually confirmed.
-
-Version 0.1.4: added tests for month grid/leap-day/year boundaries, selected-date query bounds and reset to today, wrapped/bare/unsafe meeting URLs and plain-text descriptions. Native ICS fixtures verify conferencing metadata and exception-specific join links without changing the original ICS. Native React checks exercise row expansion and month controls; inline icons require no downloads.
-
-Live version 0.1.4 installed and reloaded: the full October month grid, selected-day agenda, Today/month navigation controls, monochrome icons and supported meeting Join buttons were visible in the dark-theme sidebar. Clicking a meeting expanded its plain-text invitation and attendee disclosure; clicking again collapsed it. Existing actions remained available. No real meeting link was opened during validation.
-
-Version 0.1.5: stylesheet compilation passed with the installed app's active dark theme. Installed source/version matched the workspace. After reloading Mailspring, larger calendar dates, meeting titles, times, controls and action text were visually confirmed alongside the native mailbox text. This change only adjusts typography and calendar cell height.
-
-Version 0.1.6: 21 unit tests passed, including Google draft time/date boundaries, exact Google destination and multi-account selection. Native React checks verify calendar-window-only registration, account selection, draft launch and cleanup. Native calendar/React checks and dark-theme LESS compilation passed. The installed native video toggle has an empty handler and no room resource integration; this update opens Google Calendar rather than claiming a location field books rooms. No OAuth credentials or new calendar write permissions are requested by the plugin.
-
-Live version 0.1.6 installed and both Mailspring windows reloaded. New meeting appeared in the sidebar and native Calendar Preview header. Google's full editor was verified in the signed-in StarHub Chrome profile with Add Google Meet and Rooms. Calendar ignored authuser in the personal default profile during the initial check, so the final plugin routes through Google AccountChooser with the work email; a profile without that account now reaches Google's sign-in page. The work-profile draft stayed unsaved; no meeting was created, room booked or invitation sent. The plugin cannot select an OS browser profile; use the signed-in work profile or complete Google sign-in if prompted.
-
-Version 0.1.7: the action button was opening an editor above the calendar without revealing it in a scrolled pane. The form now belongs to Actions; every explicit editor-open request expands Actions, reveals the pane and scrolls/focuses the form once. Native React regression checks cover offscreen and already-open editor requests, hidden-pane recovery, focus not repeating on ordinary updates, draft preservation across Actions disclosure, and an independent meetings disclosure that preserves expanded meeting details and the month calendar. The 21 unit tests pass. Native calendar/React checks and light/dark LESS compilation pass. Installed runtime files match the final workspace update.
-
-Live 0.1.7 action checks: email + Action revealed and focused a form linked to the selected email; Actions collapsed/expanded and retained the draft; + Action recovered a hidden pane with a collapsed section. The unsaved verification form was cancelled. The two existing completed actions remained available. No test action was saved and no email or calendar event was sent or modified.
-
-Live final 0.1.7 meetings checks: the daily calendar heading collapsed the meeting list, timezone, New meeting and Refresh controls while the month calendar, Open Calendar and expanded Actions remained visible. Expanding restored all four synced meetings. Both sections were left expanded.
-
-Version 0.1.8: opt-in local reminder controls, native Mac notification dispatch/click, snooze and persisted notification-issued state added. The native React harness loads Mailspring's actual bundled NativeNotifications implementation with mocked IPC, checks the real notification payload/click route, toggles Remind me, converts Singapore time to a saved ISO schedule, exercises Snooze, and verifies editing preserves the precise reminder instant. Existing actions do not acquire reminders on upgrade. The first live check exposed browser setInterval's receiver requirement; the default timers now invoke through globalThis, with a regression test and isolation so a future reminder-start error does not hide calendar/actions.
-
-Live final 0.1.8: corrected plugin installed and the mail window reloaded successfully; month calendar, daily meetings and Actions remained visible. Test notification returned a native notification handle and displayed the issued status. macOS Notifications already allowed Mailspring alerts, Notification Center and sounds; no settings were changed. The operating-system banner and its real click behavior were not visually confirmed. Editing the existing open action and selecting Remind me revealed the date/time picker with 12 October 2026 at 09:00 in Asia/Singapore. Cancel closed this unsaved preview; all three saved actions were retained and no real reminder was enabled during validation. Timed delivery, snooze and restart behavior were validated with the automated scheduler/native integration harnesses, not by scheduling a real work reminder.
-
-
-Version 0.1.9: four additional unit tests cover local day boundaries, DST, action/star precedence, source-account validation, empty sections and header/row scroll geometry. A native grouping integration harness loads the installed application's query/matcher, ThreadList, MultiselectList, ListTabular, row renderer and FluxContainer code with mocked stores/IPC. It verifies scoped and escaped SQL, global priority ordering against synthetic SQLite fixtures, disjoint section counts, non-selectable headings, scrolling, completion, recent/grouped toggle and cleanup. The first live render exposed that FluxContainer requires one child element; recursive element transforms now preserve single-child shape, with a native FluxContainer regression check. All 37 unit tests, existing native calendar/React/reminder integration checks, grouping integration, JavaScript syntax and light/dark LESS compilation pass.
-
-Live final 0.1.9 installed runtime files match the workspace. The inbox shows Needs action / follow-up, Today, Yesterday and Earlier with exact local-folder counts. The existing BPR action email appears once at the top, with ordinary mail below. Empty Starred is hidden because the selected inbox has no starred threads. The screenshot confirmed neutral section bars and unchanged native email rows; clicking the pinned email opened its matching conversation in the reading pane. The Recent mail rollback was exercised during correction and restored the native inbox. Live scrolling into earlier mail was interrupted by detected user activity, so continued virtualization and star-change behavior are supported by the synthetic native integration checks rather than a real-mail modification. No email was starred, archived, deleted or sent during validation; saved action/reminder data was not edited. Opening a thread uses Mailspring's normal configured mark-as-read behavior.
-
-
-## Version 0.1.12
-
-44 unit checks passed. Verified live in Mailspring 1.26.0: collapsed 72px mailbox rail, expanded sidebar, coloured labels, native label selection, restored Inbox and compact sync-status button. Preferences retain the native expanded width. The final scrollbar polish compiles with Midnight variables. Existing action data was not edited.
+Earlier evidence is retained in [historical validation through 0.1.12](docs/archive/validation-through-0.1.12.md). See the [changelog](CHANGELOG.md) for release history.

@@ -1,37 +1,40 @@
 # Today + Actions — Mailspring plugin
 
-A resizable right sidebar for today's calendar and actions linked to email threads.
-Built against the installed Mailspring **1.26.0** application. This is version **0.1.13**.
+Version **0.1.13** · Tested with **Mailspring 1.26.0 on macOS**.
+
+A calendar and email-linked action pane, grouped mail, a collapsible mailbox sidebar, and currency/timezone tools below the email reader.
 
 Version 0.1.13 adds a collapsible Tools panel at the bottom of the email reader. Choose Currency or Timezone. Today + Actions stays in its existing right column.
 
-Version 0.1.9 adds grouped email lists in normal folders and Starred: Needs action / follow-up, Starred, Today, Yesterday and Earlier. Open email-linked actions pin their thread above starred mail. Each email appears once, stays in its current folder, and keeps the native email controls. The Grouped mail toolbar button switches back to Recent mail. Empty sections are hidden. Search results and special views such as Unread keep their native ordering.
-
-Version 0.1.8 adds opt-in reminder date/time, native Mac notifications, reminder follow-up controls and snooze. Missed alerts are checked on reopening Mailspring. Reminder times and notification-issued state persist locally without enabling reminders on existing actions.
-
-Version 0.1.7 fixes an offscreen action editor: email + Action, + New and Edit now expand Actions, scroll the form into view and focus its title, including repeated clicks. The form lives inside Actions. Click the Actions heading/arrow to collapse or expand the section without losing an unsaved draft. Its open-action count and + New remain visible. The daily calendar heading/arrow separately collapses or expands meetings while preserving meeting details. The month calendar stays visible; disclosure state lasts while the plugin is running.
-
-Version 0.1.6 adds New meeting in the sidebar and native calendar window. It opens a draft in Google Calendar for real Meet generation and work room booking. Version 0.1.5 uses the active theme's native font sizes: 14px main text, 13px controls and 12px secondary labels in the current theme. Version 0.1.4 adds a navigable month calendar, meeting details on click, monochrome inline icons, and conferencing metadata/Google redirect support for join links. Version 0.1.3 uses neutral calendar rows and segmented action filters, removes coloured card edges, and hides repeated calendar names when only one calendar is represented. Version 0.1.2 follows your active Mailspring theme rather than the base light palette. Version 0.1.1 fixes the startup error “Cannot find module 'react'” by using React through Mailspring's exports. Reinstall this folder over version 0.1.0; your locally saved actions are retained.
-
 ## Install on macOS
 
-1. Extract `aswin-today-actions.zip`.
+1. Download `aswin-today-actions-0.1.13.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.13) and extract it.
 2. In Mailspring, choose **Developer → Install a Plugin…**.
 3. Select the **aswin-today-actions** folder that directly contains `package.json`.
-4. If it does not appear immediately, quit and reopen Mailspring.
+4. Choose **Developer → Reload**. If the plugin does not appear, quit and reopen Mailspring.
 5. Use the **Today + Actions** toolbar button to show or hide the right pane.
 
 No terminal commands, build step, npm install, or Mailspring ID are required.
 
-## Use
+## Currency and timezone tools
 
 - **Currency:** enter an amount (plain decimals or comma grouping; negative refunds are supported), choose currencies, and click Convert. Supports 20 common currencies. Shows an indicative daily Frankfurter rate with its observation date, excluding bank fees. Requires internet for different currencies; same-currency calculations work offline. Inputs and results reset on reload. Amounts up to 1 trillion are supported; this is an approximate converter, not accounting software.
 - **Timezone:** choose a date/time and source/destination IANA timezones. Results include the destination date and UTC offset. Now uses the selected source timezone. Swap retains the represented instant for ordinary times. DST gaps are rejected; repeated times require an explicit earlier/later choice. Uses the app's bundled timezone rules and works offline.
 - **Tools:** collapse the panel with its heading; selecting Currency or Timezone expands it again. The panel remains outside the email scroll area and wraps on narrower reader widths.
 
+## Mail organisation
+
+### Mailbox sidebar
+
+Click **Collapse** above the mailbox list to use the icon rail. Click the top chevron to expand again. Hover an icon for its folder or label name. Label icons and names have consistent local colours in both views. The account switcher, unread badges, nested folders and keyboard navigation remain native Mailspring controls. Click the sync icon at the bottom to expand for details. The collapsed preference saves automatically; expanding restores the existing sidebar width.
+
+### Grouped mail
+
 - **Grouped mail:** email-linked open actions appear in Needs action / follow-up. Gmail stars appear in Starred unless that email already has an open action. Other mail uses Today, Yesterday or Earlier based on the latest received message and your Mac's local calendar day; Sent uses the latest sent message. New replies update the date group. Empty sections are hidden and each section is newest first. Completing all actions linked to an email returns it to Starred or its date section. Starred mail is promoted across the entire selected folder, including older mail outside the visible page.
 - **Follow up on an email:** select it, click + Action and save an open action; choose Remind me separately if you want a notification. This view uses Today + Actions follow-ups, not Mailspring Pro's send-reminder metadata.
 - **Grouped mail / Recent mail toolbar button:** toggles grouping for this session. Search and special subscription views retain their normal semantics. Grouping resumes by default on restart.
+
+## Calendar and meetings
 
 - **New meeting:** opens Google Calendar in your browser. From the sidebar it uses the selected day; from the native calendar header it defaults to today. Today rounds forward to the next half hour, other days start at 9am, and the default duration is 30 minutes. Add a title, guests, Google Meet and available rooms there, then save in Google Calendar. The button opens an unsaved draft and sends no invitations. Your single Google account (or the Google account of the focused email) is passed to Google's account chooser. If that account is not signed in to the default browser profile, Google asks you to sign in instead of silently using your personal calendar. You can open the draft in your signed-in work browser profile.
 - **Month calendar:** use the arrows to browse months, click a date to view its meetings, or click Today to return to the current day. Actions remain a personal due-date tracker independently of the selected calendar date.
@@ -41,6 +44,8 @@ No terminal commands, build step, npm install, or Mailspring ID are required.
 - **Divider above Actions:** drag its centre grip up to squeeze the meetings list or down to expand it. The height updates continuously and saves when released. Double-click resets to 320px. When focused, Up/Down adjust by 20px; Home/End choose the height limits. The divider appears while the meetings section is open and contains events. The meeting list uses a fixed chosen height so the divider moves even when the day's events are short.
 - **Join meeting:** opens recognised HTTPS Google Meet, Microsoft Teams, Zoom or Webex links in your browser. It appears whenever the synced invitation includes a supported link, including past meetings. If none is present, meeting details explain that no online link was supplied. Conferencing metadata is read from an in-memory ICS copy; no calendar data is edited.
 - **Open Calendar:** opens Mailspring's native calendar and its normal sync flow. The sidebar reads calendars already synced by Mailspring; it doesn't establish a new Google connection. Calendar visibility follows the calendars selected in the native calendar window.
+## Actions and reminders
+
 - **+ Action** in the email toolbar: opens a task form inside Actions, reveals the pane/section and brings the form into view. The link is captured from the single selected thread when the form opens and does not silently change if you select another email.
 - **Actions heading/arrow:** collapses or expands the action form, filters and list. Collapsing retains your unsaved draft; + New or + Action expands the section automatically.
 - **Daily calendar heading/arrow:** collapses or expands the meetings section independently of Actions. The month calendar and Open Calendar remain visible, and expanded meeting details are retained.
@@ -57,19 +62,34 @@ Actions are a personal tracker. Typing another person's name in Owner does not n
 
 ## Privacy and storage
 
-Currency conversion makes an HTTPS GET to `https://api.frankfurter.dev/v2/rate/{base}/{quote}` only when you click Convert with different currencies. It sends only currency codes; amounts, mailbox data, account details and actions are not sent. Requests omit cookies and are cancelled on input edits/unmount, with a 15-second timeout. No background rate fetching, backend, analytics, AI service, or runtime downloads are added. Timezone conversion uses built-in Intl locally. It uses Mailspring's bundled React and existing local calendar/database APIs.
+Currency conversion requests a daily rate from [Frankfurter](https://frankfurter.dev/) when you click **Convert** with different currencies. Only the two currency codes are sent. Amounts, mailbox data, account details and actions stay on the Mac. Requests omit cookies, stop when the inputs change or the panel is removed, and time out after 15 seconds.
+
+Timezone conversion runs locally. The plugin uses Mailspring's bundled React and existing calendar/database APIs. It adds no analytics, AI service or background downloads.
 
 Action titles, owners, due dates, notes and source thread/account IDs and subjects are saved to:
 
 `~/Library/Application Support/Mailspring/today-actions/actions.json`
 
-The source email body and attachments are not copied into this file. The file is plain JSON, not encrypted by this plugin; rely on your Mac's account permissions and disk encryption. Files are created with owner-only permissions. Each successful change keeps the previous file as `actions.json.bak`, and uses an atomic replacement for the new file. An unreadable/corrupt task file is preserved and further writes are blocked; quit Mailspring before restoring a known-good backup.
+The source email body and attachments are not copied into this file. The file is plain JSON. The plugin does not encrypt it; protection depends on the Mac's account permissions and disk encryption. Files are created with owner-only permissions. Each successful change keeps the previous file as `actions.json.bak`, and uses an atomic replacement for the new file. An unreadable/corrupt task file is preserved and further writes are blocked; quit Mailspring before restoring a known-good backup.
 
-Actions do not sync to another Mac. Reminder schedules and notification-issued state are saved in the same local action file. Native Mac notifications contain the action title, not its notes or source email body. The scheduler runs only in the main mail window, checks every 30 seconds and on save/start, and catches up after sleep or reopening. It issues each schedule once; missed or suppressed banners remain represented by due reminders in the pane. Mailspring must keep running with its main mail window loaded; a minimized window or hidden Today + Actions pane is fine. If Mailspring is fully quit, alerts wait until reopening; this version does not install a background helper or integrate Apple Reminders. Mailspring's own provider syncing, crash reporting, and privacy settings are separate from this plugin. Clicking New meeting opens Google Calendar and passes the selected time, timezone and suggested account email. It does not pass email subjects, bodies, attendees or notes. Generating Meet and booking rooms happen in Google Calendar with its existing account permissions. Clicking Join opens the meeting provider, and Open Calendar invokes Mailspring's normal calendar syncing.
+### Reminders
+
+Actions do not sync to another Mac. Reminder schedules and notification-issued state are saved in the same action file. Native Mac notifications contain the action title, without notes or source email contents.
+
+The scheduler runs in the main mail window. It checks every 30 seconds, on save and on startup, and catches up after sleep or reopening. It issues each schedule once. Missed or suppressed banners remain visible as due reminders in the pane.
+
+Mailspring must keep running with its main mail window loaded. A minimised window or hidden Today + Actions pane is sufficient. If Mailspring is fully quit, alerts wait until reopening. This version installs no background helper and does not integrate Apple Reminders.
+
+### Calendar and meeting links
+
+**New meeting** opens Google Calendar with the selected time, timezone and suggested account email. It passes no email subjects, bodies, attendees or notes. Google Calendar creates Meet links and books rooms using its existing account permissions.
+
+**Join meeting** opens the meeting provider. **Open Calendar** invokes Mailspring's normal calendar syncing. Mailspring's provider syncing, crash reporting and privacy settings remain separate from this plugin.
 
 ## Compatibility and limitations
 
-- Uses public plugin registries plus private bundled calendar and thread-list components/query APIs. Grouped mail reuses the native selection, drag, swipe and context-menu controls, with section headings outside the selectable thread data. Search and special perspectives are intentionally left native. An app update could require changes to this integration. Uses the **private bundled calendar occurrence helper**. An app update could change that helper; the sidebar will show an explanation while actions remain usable. Tested against the installed 1.26.0 API; calendar source compatibility beyond that version is not guaranteed.
+- Uses public plugin registries and internal calendar/thread-list APIs. Tested with Mailspring 1.26.0; later app versions may require compatibility changes. If the calendar helper becomes unavailable, the pane shows an explanation and actions remain usable.
+- Grouped mail retains native selection, drag, swipe and context-menu controls. Section headings are outside selectable thread data. Search and special perspectives retain native behavior.
 - Only calendars supported and already synced by your Mailspring account appear. Unsynced calendars cannot be reconstructed from email invitations by this plugin.
 - The sidebar is added to the inbox and email sheets in the main mail window, not separate compose or pop-out windows.
 - No event creation/editing inside the Mailspring preview: New meeting uses Google Calendar's full editor. No automatic task extraction, delegation, cloud task sync or reminder alerts when Mailspring is fully quit.
@@ -84,15 +104,10 @@ Restart Mailspring. Keep `today-actions/actions.json` and its backup if you want
 
 ## Development and validation
 
-The `lib/` files are ready-to-run CommonJS JavaScript using the host's React; no transpilation is needed. Run unit tests with Node 18+:
+The `lib/` files use CommonJS JavaScript and Mailspring's bundled React. A build step is not required. Run unit tests from this package directory; use Node.js 20 or later for the repository's development workflow:
 
 ```sh
 node --test test/*.test.js
 ```
 
-The development workspace also includes checks using the installed app's native calendar expansion helper, React rendering and LESS compiler. See the packaged `VALIDATION.md` for results and the distinction between automated checks and an actual in-app smoke test.
-
-
-## Mailbox sidebar (v0.1.12)
-
-Click **Collapse** above the mailbox list to use the icon rail. Click the top chevron to expand again. Hover an icon for its folder or label name. Label icons and names have consistent local colours in both views. The account switcher, unread badges, nested folders and keyboard navigation remain native Mailspring controls. Click the sync icon at the bottom to expand for details. The collapsed preference saves automatically; expanding restores the existing sidebar width.
+The development workspace also includes checks using the installed app's native calendar expansion helper, React rendering and LESS compiler. See [validation](VALIDATION.md) for results and coverage limits. See the [changelog](CHANGELOG.md) for release history.

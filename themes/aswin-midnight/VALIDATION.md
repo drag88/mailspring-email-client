@@ -1,20 +1,22 @@
-# Midnight 1.0.2 validation
+# Midnight 1.0.4 validation
 
-Date: 12 October 2026. Target: installed macOS Mailspring 1.26.0.
+Validated on **14 October 2026** against **Mailspring 1.26.0 on macOS**. Earlier palette and native loading checks were recorded on 12 October 2026.
 
-## Passed
+## Current checks
 
-- Nine unit tests: idempotent activation/deactivation, registration cleanup, prior reading-mode restoration, user-choice preservation, original-colour fallback, document deduplication and weak references, failed configuration cleanup, and reversible sender inline important colours without clobbering later extension changes; original-colour contrast repair for light and dark sender panels; canonical CSS colour restoration.
-- Native Package activation loads the theme's three LESS files and activates its reader extension. Deactivation removes both styles and extension. No copied host code or dependencies are included in the package.
-- Native EmailFrameStylesStore forwards the theme's email-frame.less and removes its parent-frame marker. Its dark-mode inversion is overridden inside rendered documents, while its light-mode toggle replaces the dark styling with a readable light canvas and reversible foreground repair.
-- All theme LESS compiles. The existing Today + Actions stylesheet compiles against the new palette and resolves the intended foreground/background values.
-- Contrast ratios: email body 12.79:1; secondary text 8.57:1; muted text 6.66:1; links 9.16:1; read-row text 10.63:1; read snippets 7.70:1; unread 13.51:1; selected 10.88:1; emphasis buttons 10.29:1; table headings 11.17:1.
-- The colour treatment leaves images uninverted and does not edit stored message content. Synthetic preview only; no real mailbox data was used in fixtures.
+- Nine reader lifecycle and colour-repair unit tests passed in the repository's 61-test suite.
+- Thirteen real-browser checks passed for quoted-history recognition, nested blocks, trailing signatures, inline replies, ordinary quotations, quote-only messages, repeated application, native-expanded history, reader integration and cleanup.
+- The retained 1.0.4 theme source matched the installed package before the converter update. Live inspection confirmed that the latest reply, signature and **Show quoted history** control remained visible alongside the new Tools panel.
+- Independent review of the release found no actionable defects.
 
-## Live checks
+The browser checks use synthetic messages. The theme changes rendered documents only; saved email contents are preserved.
 
-Version 1.0.2: source styles and package version matched the installed package after the update. A window reload visibly applied the rounded Inbox highlight, sharper sidebar icons, selected Grouped mail toggle, blue calendar-date selection and transparent New meeting area. Selecting October 13 moved the highlight and left October 12 separately marked as today; Today restored October 12. Selecting Done moved the action-filter highlight and showed readable native blue checked checkboxes; Due was restored. Only view selections changed. No action, reminder or email content was modified. Keyboard focus is scoped to the immediate sidebar row in CSS; keyboard traversal through nested folders was not separately exercised.
+## Earlier evidence
 
-The initial control discovery omitted the direct Computer tool. A direct Mailspring call subsequently succeeded. With user approval, the theme was installed through Mailspring's plugin installer and selected in the theme picker. The first live original-colour check exposed pale text on white; version 1.0.1 corrects this with a light reading canvas and reversible contrast repair. The corrected version was installed, the window reloaded, and runtime files matched the workspace. Live screenshots confirmed the charcoal palette, readable read/unread/selected rows and date headers, matching calendar/actions pane, dark email text, original dashboard-image colours, and clear black text/blue links when the native light-mode toggle was selected. Dark mode was restored at the end. No emails were sent, starred, archived or deleted, and no action/reminder was changed. Screenshots of real mailbox data were used only for internal inspection and were not saved in the package. The static design board is illustrative. Headless Chromium remained blocked by macOS process restrictions.
+Native theme loading, unloading, original-colour fallback, stylesheet compilation, colour contrast and live palette checks are retained in [version 1.0.2 validation](docs/archive/validation-1.0.2.md). Those observations are dated and do not imply that every check was repeated for 1.0.4.
 
-The live check covered a dashboard HTML email with an image and text. Complex newsletters, unusual tables and pop-out windows were not individually exercised in the live app. Confirm the month calendar, Actions and grouped mail headings retain their layout. Use the original-colour toggle for messages whose branded backgrounds or charts need their exact sender presentation.
+## Coverage limits
+
+The quoted-history fallback handles recognised HTML quote blocks with email markers. Ordinary unmarked quotations, quote-only messages and unrecognised plain-text history remain visible. The fallback runs while Midnight is selected.
+
+Complex newsletters, unusual tables and pop-out windows were not individually retested in the live application for this release. Use the native original-colour toggle when a message needs its sender's exact presentation. Future Mailspring versions may change the rendering APIs.

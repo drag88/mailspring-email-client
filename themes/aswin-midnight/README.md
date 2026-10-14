@@ -1,16 +1,20 @@
 # Midnight — Aswin
 
-A charcoal Mailspring theme with readable dark emails, neutral date sections and a matching Today + Actions pane. Built for Mailspring 1.26.0 on macOS.
+Version **1.0.4** · Tested with **Mailspring 1.26.0 on macOS**.
+
+A charcoal Mailspring theme with readable dark emails, neutral date sections and a matching Today + Actions pane.
 
 ## Install
 
-1. Extract the ZIP.
+1. Download `aswin-midnight-1.0.4.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.13) and extract it.
 2. In Mailspring choose **Developer → Install a Plugin…**, then select the **aswin-midnight** folder containing `package.json`.
 3. Open **Preferences → Appearance → Change Theme…** and choose **Midnight — Aswin**.
 
 Selecting the theme also selects dark email reading. The existing “Switch email view to light mode” button restores original sender colours; toggle back to dark to use Midnight’s email colours. If the theme does not appear in the picker immediately, reload Mailspring. No npm install or terminal commands are needed.
 
-The package contains theme JavaScript as well as LESS styles, because a stylesheet alone cannot both replace Mailspring’s inversion-based email mode and preserve its native original-colour toggle. The code uses the native rendered-message extension hook and reads only its own CSS file.
+## Quoted history
+
+Version 1.0.4 folds email quote blocks that Mailspring does not recognise because of trailing signatures. The latest reply, trailing signature and replies between quoted blocks stay visible. Click **Show quoted history** to expand and **Hide quoted history** to collapse again. Native recognised quotes keep their existing three-dot control. This display fallback is active while Midnight is selected and never changes saved email contents. Ordinary unmarked quotations, quote-only messages and unrecognised plain-text history remain visible.
 
 ## Design
 
@@ -29,24 +33,28 @@ Open `preview.html` in a browser for a self-contained sample with an Original co
 
 ## Privacy and reversibility
 
-No cloud backend, analytics, network client, external fonts or dependencies. The theme changes displayed documents only: stored email bodies, subjects, attachments, links and action files are not rewritten. It does not send messages, mark stars, create events or change Gmail rules.
+The theme makes no network requests and adds no analytics, external fonts or package dependencies. The theme changes displayed documents only: stored email bodies, subjects, attachments, links and action files are not rewritten. It does not send messages, mark stars, create events or change Gmail rules.
 
 Selecting the theme sets `core.reading.emailRenderMode` to dark. Switching away unregisters the reader, removes its injected styles, restores any adjusted inline style priorities, and restores the earlier reading mode if the user has not changed it while the theme was active. An explicit reading-mode choice is retained. Removing the theme leaves Today + Actions and its saved actions in place.
 
 ## Validation and limits
 
-Nine reader lifecycle and colour-repair tests pass. Checks against the installed native Package and EmailFrameStylesStore implementations cover theme loading, frame CSS forwarding, original-colour fallback and unloading. Today + Actions compiles with the palette. Main text, secondary text, links, snippets, unread rows, selected rows, buttons and table headings all exceed 4.5:1 contrast.
-
-Version 1.0.2 was installed and applied in Mailspring on 12 October 2026. Live checks confirmed rounded folder selection, clear selected dates and action filters, readable checked controls, the active grouped-mail toggle, and the flat New meeting area. Calendar selection moved to the next date and back; the action filter moved to Done and back to Due. Earlier live checks covered dark email text, uninverted dashboard images and the original-colour toggle. The preview remains illustrative rather than a screenshot of a real mailbox.
+Nine reader lifecycle and colour-repair unit tests and 13 quoted-history browser checks passed. See [validation](VALIDATION.md) for current results, dated native/palette evidence and coverage limits.
 
 Future Mailspring versions can change the extension or rendering APIs. Switching to another theme removes the reader integration.
 
 ## Development
 
-Run `node --test test/*.test.js`. The source uses the host exports and built-in Node modules without a build step.
+Run unit tests from the theme directory:
 
-## Quoted history
+```sh
+node --test test/*.test.js
+```
 
-Version 1.0.4 folds email quote blocks that Mailspring does not recognise because of trailing signatures. The latest reply, trailing signature and replies between quoted blocks stay visible. Click **Show quoted history** to expand and **Hide quoted history** to collapse again. Native recognised quotes keep their existing three-dot control. This display fallback is active while Midnight is selected and never changes saved email contents. Ordinary unmarked quotations, quote-only messages and unrecognised plain-text history remain visible.
+With Vercel Agent Browser available, run the 13 quoted-history checks:
 
-Run `npm run test:browser` with Vercel Agent Browser available to verify the 13 real-browser quote and reader integration checks.
+```sh
+npm run test:browser
+```
+
+The source uses host exports and built-in Node modules without a build step. Theme JavaScript uses Mailspring's rendered-message hook to apply email styles and retain its original-colour toggle. It reads only the theme's own CSS file.
