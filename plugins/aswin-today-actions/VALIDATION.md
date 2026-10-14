@@ -1,4 +1,22 @@
-# Validation — version 0.1.11
+# Validation — version 0.1.13
+
+Validated on 14 October 2026 against macOS Apple Silicon Mailspring **1.26.0 / 3b46a5b1**, the latest upstream release at preparation time. Fresh GitHub source baseline: `18b38dc`. Plugin baseline 0.1.12; retained the exact installed Midnight 1.0.4 theme with collapsible quoted history.
+
+- **61 unit tests passed** (52 plugin, 9 theme). New checks cover grouped/negative/invalid amounts, currency minor units, same-currency offline behavior, rate payload validation, timezone date rollover, winter/summer offsets, New York and Lord Howe missing/repeated times, edited-input cancellation, request supersession, unmount cleanup, and recoverable request failure.
+- **10 isolated browser interaction checks passed**: date rollover, DST gap, repeated-hour warning/explicit later choice, collapse, tab expansion/input retention, currency grouped decimal input, observation-date display, swap result invalidation, and no horizontal overflow. Synthetic previews visually checked at 1440x900 and 390x844; currency and timezone controls remain usable.
+- **13 real-browser quoted-history regression checks passed** for retained Midnight 1.0.4.
+- **Native React/calendar integration harness passed** using bundled dependencies and synthetic data. Checked converter registry location, activation idempotence, full cleanup, exclusion from calendar window, and existing action, reminder, meeting, draft and room behavior. The harness deliberately lacks the mailbox sidebar registry mock; that optional integration is covered by existing unit checks and the visible live mailbox rail.
+- **Light/dark LESS compilation passed**; all 19 runtime JavaScript files passed syntax checks. No lint or typecheck command is configured.
+- **Live Mailspring:** installed 0.1.13 and reloaded. With the existing email open, Tools appeared beneath the reader, while the right Today + Actions calendar/actions remained present. Latest reply, signature and quoted-history disclosure remained visible. Currency: 100 SGD produced 78.13 USD, using Frankfurter rate 0.78126 dated 2026-10-14. No amount or mailbox data was sent to the rate service.
+- Saved action-file SHA-256 was unchanged. Runtime source matches the prepared version. Existing theme was retained.
+
+Live timezone interaction was stopped when computer-use detected user activity; timezone behavior is verified by unit, native React render and real-browser interaction checks. Live list/splitVertical modes were not switched; the component uses their shared native MessageList location. No calendar meeting, action or reminder was edited for testing. An app shortcut briefly opened a blank reply draft; that generated draft was immediately removed, and the original thread returned to three messages. No email was sent. Real-mailbox screenshots were inspected internally and are not included in the source or downloads.
+
+Currency rates are indicative daily observations, exclude fees, and may be older on non-publication days. They require internet access; timezone conversion and same-currency arithmetic work offline. IANA timezone rules follow the installed app runtime. Inputs/results and collapse state are session-only. No new package dependencies.
+
+## Earlier version validation
+
+### Version 0.1.11
 
 Validated on 12 October 2026 against the installed macOS Apple Silicon Mailspring **1.26.0** bundle.
 

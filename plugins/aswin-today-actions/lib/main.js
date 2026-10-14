@@ -15,6 +15,8 @@ const { readDisplay, saveDisplay, normalizeDisplay, meetingLocation, MIN_HEIGHT,
 const { createMeetingResizer } = require('./meeting-resizer');
 const MeetingResizer = createMeetingResizer(React);
 const { ReminderScheduler, localReminderValue, reminderISO, suggestedReminder, snoozeInstant, reminderDue } = require('./reminders');
+const { createReaderConverters } = require('./reader-converters');
+const ReaderConverters = createReaderConverters(React);
 const h = React.createElement;
 let runtime = null;
 
@@ -453,6 +455,7 @@ function activate() {
   api.ComponentRegistry.register(TodayActionsSidebar, { location: layout.location });
   api.ComponentRegistry.register(SidebarToggle, { location: api.WorkspaceStore.Sheet.Global.Toolbar.Right });
   api.ComponentRegistry.register(AddActionButton, { role: 'ThreadActionsToolbarButton' });
+  api.ComponentRegistry.register(ReaderConverters, { location: api.WorkspaceStore.Location.MessageList });
   try { runtime.groupedMail = installGroupedMail(api, AppEnv, runtime.store); }
   catch (error) { console.warn('Today + Actions: grouped mail is unavailable', error); }
   try { runtime.mailSidebar = installMailSidebar(api, AppEnv); }
@@ -470,6 +473,7 @@ function deactivate() {
   api.ComponentRegistry.unregister(TodayActionsSidebar);
   api.ComponentRegistry.unregister(SidebarToggle);
   api.ComponentRegistry.unregister(AddActionButton);
+  api.ComponentRegistry.unregister(ReaderConverters);
   runtime.mailSidebar?.cleanup();
   runtime.groupedMail?.cleanup();
   runtime.feed?.stop();

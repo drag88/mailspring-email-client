@@ -1,7 +1,9 @@
 # Today + Actions — Mailspring plugin
 
 A resizable right sidebar for today's calendar and actions linked to email threads.
-Built against the installed Mailspring **1.26.0** application. This is version **0.1.9**.
+Built against the installed Mailspring **1.26.0** application. This is version **0.1.13**.
+
+Version 0.1.13 adds a collapsible Tools panel at the bottom of the email reader. Choose Currency or Timezone. Today + Actions stays in its existing right column.
 
 Version 0.1.9 adds grouped email lists in normal folders and Starred: Needs action / follow-up, Starred, Today, Yesterday and Earlier. Open email-linked actions pin their thread above starred mail. Each email appears once, stays in its current folder, and keeps the native email controls. The Grouped mail toolbar button switches back to Recent mail. Empty sections are hidden. Search results and special views such as Unread keep their native ordering.
 
@@ -22,6 +24,10 @@ Version 0.1.6 adds New meeting in the sidebar and native calendar window. It ope
 No terminal commands, build step, npm install, or Mailspring ID are required.
 
 ## Use
+
+- **Currency:** enter an amount (plain decimals or comma grouping; negative refunds are supported), choose currencies, and click Convert. Supports 20 common currencies. Shows an indicative daily Frankfurter rate with its observation date, excluding bank fees. Requires internet for different currencies; same-currency calculations work offline. Inputs and results reset on reload. Amounts up to 1 trillion are supported; this is an approximate converter, not accounting software.
+- **Timezone:** choose a date/time and source/destination IANA timezones. Results include the destination date and UTC offset. Now uses the selected source timezone. Swap retains the represented instant for ordinary times. DST gaps are rejected; repeated times require an explicit earlier/later choice. Uses the app's bundled timezone rules and works offline.
+- **Tools:** collapse the panel with its heading; selecting Currency or Timezone expands it again. The panel remains outside the email scroll area and wraps on narrower reader widths.
 
 - **Grouped mail:** email-linked open actions appear in Needs action / follow-up. Gmail stars appear in Starred unless that email already has an open action. Other mail uses Today, Yesterday or Earlier based on the latest received message and your Mac's local calendar day; Sent uses the latest sent message. New replies update the date group. Empty sections are hidden and each section is newest first. Completing all actions linked to an email returns it to Starred or its date section. Starred mail is promoted across the entire selected folder, including older mail outside the visible page.
 - **Follow up on an email:** select it, click + Action and save an open action; choose Remind me separately if you want a notification. This view uses Today + Actions follow-ups, not Mailspring Pro's send-reminder metadata.
@@ -51,7 +57,7 @@ Actions are a personal tracker. Typing another person's name in Owner does not n
 
 ## Privacy and storage
 
-The plugin has no network client, cloud backend, analytics, AI service, or runtime downloads. It uses Mailspring's bundled React and existing local calendar/database APIs.
+Currency conversion makes an HTTPS GET to `https://api.frankfurter.dev/v2/rate/{base}/{quote}` only when you click Convert with different currencies. It sends only currency codes; amounts, mailbox data, account details and actions are not sent. Requests omit cookies and are cancelled on input edits/unmount, with a 15-second timeout. No background rate fetching, backend, analytics, AI service, or runtime downloads are added. Timezone conversion uses built-in Intl locally. It uses Mailspring's bundled React and existing local calendar/database APIs.
 
 Action titles, owners, due dates, notes and source thread/account IDs and subjects are saved to:
 
