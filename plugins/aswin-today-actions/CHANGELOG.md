@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.14 — 16 October 2026
+
+- Add a Mac menu bar preview with unread inbox conversations across connected accounts and the rest of today's synced agenda.
+- Keep ongoing, upcoming and all-day meetings while excluding finished, declined and cancelled events.
+- Restore native commands on renderer unload without replacing the existing status item.
+- Keep the menu pinned to today when another date is selected in the sidebar.
+- Known issue: the icon remained invisible during live validation. Internal data checks passed, but this release does not resolve the missing-icon symptom.
+
 ## 0.1.13 — 14 October 2026
 
 - Add Currency and Timezone tabs in a collapsible Tools panel below the email reader.

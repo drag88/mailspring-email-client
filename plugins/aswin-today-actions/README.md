@@ -1,14 +1,14 @@
 # Today + Actions — Mailspring plugin
 
-Version **0.1.13** · Tested with **Mailspring 1.26.0 on macOS**.
+Version **0.1.14** · Tested with **Mailspring 1.26.0 on macOS**.
 
 A calendar and email-linked action pane, grouped mail, a collapsible mailbox sidebar, and currency/timezone tools below the email reader.
 
-Version 0.1.13 adds a collapsible Tools panel at the bottom of the email reader. Choose Currency or Timezone. Today + Actions stays in its existing right column.
+Version 0.1.14 adds a Mac menu bar preview with an unread inbox count and the rest of today's agenda. The icon remained invisible during live validation on the development Mac. Existing calendar, actions and converter tools remain available in the main window.
 
 ## Install on macOS
 
-1. Download `aswin-today-actions-0.1.13.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.13) and extract it.
+1. Download `aswin-today-actions-0.1.14.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.14) and extract it.
 2. In Mailspring, choose **Developer → Install a Plugin…**.
 3. Select the **aswin-today-actions** folder that directly contains `package.json`.
 4. Choose **Developer → Reload**. If the plugin does not appear, quit and reopen Mailspring.
@@ -17,6 +17,8 @@ Version 0.1.13 adds a collapsible Tools panel at the bottom of the email reader.
 No terminal commands, build step, npm install, or Mailspring ID are required.
 
 ## Mac menu bar
+
+**Known issue:** the icon remained invisible during live validation, including after freeing menu-bar space. The internal tray, count and menu data were verified, but visible placement and real popup clicks remain unresolved. This release does not claim to fix the missing-icon symptom.
 
 The existing Mailspring icon shows the exact unread inbox conversation count across all connected accounts, including zero. Click it for the same count and the rest of today's agenda in your Mac's timezone. Ongoing, upcoming and all-day events appear from your synced, visible calendars. Finished, declined and cancelled events are excluded. Hover a meeting for its end time, room and supported Join link.
 
