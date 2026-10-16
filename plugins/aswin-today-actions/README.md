@@ -16,6 +16,12 @@ Version 0.1.13 adds a collapsible Tools panel at the bottom of the email reader.
 
 No terminal commands, build step, npm install, or Mailspring ID are required.
 
+## Mac menu bar
+
+The existing Mailspring icon shows the exact unread inbox conversation count across all connected accounts, including zero. Click it for the same count and the rest of today's agenda in your Mac's timezone. Ongoing, upcoming and all-day events appear from your synced, visible calendars. Finished, declined and cancelled events are excluded. Hover a meeting for its end time, room and supported Join link.
+
+Browsing another day in the sidebar does not change this menu. Open Inbox, Open Calendar, New Message, Preferences and Quit remain available. Loading or unavailable data is labelled explicitly. Mailspring must remain running with its main window loaded; disabling the plugin restores the native menu. This uses Mailspring 1.26's private tray manager and may need updating after an app upgrade.
+
 ## Currency and timezone tools
 
 - **Currency:** enter an amount (plain decimals or comma grouping; negative refunds are supported), choose currencies, and click Convert. Supports 20 common currencies. Shows an indicative daily Frankfurter rate with its observation date, excluding bank fees. Requires internet for different currencies; same-currency calculations work offline. Inputs and results reset on reload. Amounts up to 1 trillion are supported; this is an approximate converter, not accounting software.

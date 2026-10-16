@@ -9,6 +9,7 @@ const { CalendarFeed } = require('./calendar-feed');
 const { installLayout } = require('./layout');
 const { installGroupedMail } = require('./grouped-mail');
 const { installMailSidebar } = require('./mail-sidebar');
+const { installMacMenu } = require('./mac-menu');
 const { localDateKey, groupActions, meetingLink, descriptionText, monthGrid } = require('./core');
 const { googleMeetingDraft, googleAccountEmail } = require('./meeting-draft');
 const { readDisplay, saveDisplay, normalizeDisplay, meetingLocation, MIN_HEIGHT, MAX_HEIGHT } = require('./meeting-display');
@@ -460,6 +461,8 @@ function activate() {
   catch (error) { console.warn('Today + Actions: grouped mail is unavailable', error); }
   try { runtime.mailSidebar = installMailSidebar(api, AppEnv); }
   catch (error) { console.warn('Today + Actions: mailbox sidebar is unavailable', error); }
+  try { runtime.macMenu = installMacMenu(api, AppEnv); }
+  catch (_) { console.warn('Today + Actions: menu bar integration is unavailable.'); }
   notify();
 }
 
@@ -474,6 +477,7 @@ function deactivate() {
   api.ComponentRegistry.unregister(SidebarToggle);
   api.ComponentRegistry.unregister(AddActionButton);
   api.ComponentRegistry.unregister(ReaderConverters);
+  runtime.macMenu?.cleanup();
   runtime.mailSidebar?.cleanup();
   runtime.groupedMail?.cleanup();
   runtime.feed?.stop();
