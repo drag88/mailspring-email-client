@@ -1,3 +1,25 @@
+# Today + Actions 0.1.14 validation
+
+Validated on **16 October 2026** against **Mailspring 1.26.0 on macOS Apple Silicon**. Midnight remains at 1.0.4.
+
+## Current checks
+
+- All 68 repository unit tests passed: 59 plugin tests and 9 theme tests.
+- Syntax checks passed for runtime JavaScript, and `git diff --check` passed.
+- New tests cover all-account inbox totals, zero and unavailable counts, ongoing/upcoming/all-day events, cancellations, declines, day rollover, supported meeting links, tray replacement, tooltip updates and cleanup.
+- The cleanup regression first failed when unloading replaced the tray. It now requires the same status item after unload and checks native menu callbacks in the main process.
+- Independent reviews found two lifecycle/tooltip issues, which were fixed. The focused cleanup review found no remaining blockers.
+
+## Live application limits
+
+The plugin loaded in Mailspring. Native checks confirmed a live tray object, a non-empty icon image, an unread title and the native menu contents. Reload cleanup now preserves the existing tray. Installed runtime files matched the reviewed source before release metadata updates.
+
+The user still could not see the icon. Native bounds initially overlapped the camera notch. After freeing menu-bar space, the reported position cleared the notch, but the user still reported the icon missing. The cause is therefore not fully established. Real popup clicks and visible meeting rows were not verified. This release does not claim to fix the missing-icon symptom.
+
+No mailbox or calendar data was included in repository files or release assets. The menu uses the existing synced calendars and local inbox-count stores. Browser and stylesheet checks from 0.1.13 below were not rerun for this metadata-only release preparation.
+
+---
+
 # Today + Actions 0.1.13 validation
 
 Validated on **14 October 2026** against **Mailspring 1.26.0 / 3b46a5b1 on macOS Apple Silicon**. The release retains Midnight 1.0.4 and the existing local action format.
