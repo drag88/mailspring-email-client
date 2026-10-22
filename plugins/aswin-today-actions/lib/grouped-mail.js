@@ -26,8 +26,6 @@ function installGroupedMail(api, appEnv, actionStore) {
   const originalCreate = threadStore.createListDataSource;
   let enabled = true, stopped = false, groupsCleanup = () => {}, day = localDateKey();
   let sourceKey = JSON.stringify(actionSources(actionStore.actions));
-  const listeners = new Set();
-  const announce = () => { for (const callback of listeners) callback(); };
   const descriptor = { location: api.WorkspaceStore.Location.ThreadList, role: 'ThreadList', modes: ['split', 'list'] };
 
   function GroupedRows(props) {
@@ -136,21 +134,12 @@ function installGroupedMail(api, appEnv, actionStore) {
     decorate(this.dataSource(), base, sources, dateKey);
   };
 
-  class GroupToggle extends React.Component {
-    componentDidMount() { this.changed = () => this.forceUpdate(); listeners.add(this.changed); }
-    componentWillUnmount() { listeners.delete(this.changed); }
-    render() { return h('button', { className: 'btn btn-toolbar taa-group-toggle',
-      'aria-label': enabled ? 'Switch to recent mail view' : 'Switch to grouped mail view',
-      title: enabled ? 'Show the standard chronological list' : 'Group actions, starred mail and dates',
-      'aria-pressed': enabled, onClick: () => setEnabled(!enabled) }, enabled ? 'Grouped mail' : 'Recent mail'); }
-  }
-  GroupToggle.displayName = 'AswinMailGroupToggle'; GroupToggle.containerRequired = false;
   function setEnabled(value) {
     if (stopped) return;
     enabled = value;
     registry.unregister(value ? NativeThreadList : GroupedThreadList);
     registry.register(value ? GroupedThreadList : NativeThreadList, descriptor);
-    threadStore.createListDataSource(); announce();
+    threadStore.createListDataSource();
   }
   function actionsChanged() {
     const next = JSON.stringify(actionSources(actionStore.actions));
@@ -160,13 +149,12 @@ function installGroupedMail(api, appEnv, actionStore) {
   const midnight = globalThis.setInterval(() => {
     if (day !== localDateKey()) { day = localDateKey(); if (enabled) threadStore.createListDataSource(); }
   }, 60000);
-  registry.register(GroupToggle, { location: api.WorkspaceStore.Sheet.Global.Toolbar.Right });
   setEnabled(true);
-  return { setEnabled, cleanup() {
-    stopped = true; globalThis.clearInterval(midnight); groupsCleanup(); listeners.clear();
+  return { isEnabled: () => enabled, setEnabled, cleanup() {
+    stopped = true; globalThis.clearInterval(midnight); groupsCleanup();
     actionStore.removeListener('change', actionsChanged);
     threadStore.createListDataSource = originalCreate;
-    registry.unregister(GroupToggle); registry.unregister(GroupedThreadList);
+    registry.unregister(GroupedThreadList);
     registry.register(NativeThreadList, descriptor);
     originalCreate.call(threadStore);
   } };

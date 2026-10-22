@@ -1,3 +1,28 @@
+# Today + Actions 0.1.15 validation
+
+Validated on **22 October 2026** against **Mailspring 1.26.0 on macOS Apple Silicon**. Midnight remains at 1.0.4.
+
+## Automated checks
+
+- All 68 repository unit tests pass: 59 plugin tests and 9 theme tests.
+- The packaged browser check covers six dynamic meeting-height cases and five scrolling cases. It exercises empty, short and busy lists, Actions visibility, window resizing, scrolling within long lists and scrolling onward at either end.
+- The native React/calendar harness checks the Extras menu choices, current checked states, Tools visibility across reloads, meeting height limits and existing action/reminder behavior. This development harness uses the installed app bundle and is not packaged as a portable test. Its unrelated mailbox and Mac-menu integrations are mocked or unavailable.
+- Runtime JavaScript syntax and light/dark LESS compilation pass. The repository has no configured lint or typecheck command.
+
+## Live application checks
+
+Extras replaces the three separate toolbar controls and sits beside the native contact-panel icon. Each menu choice was switched off and on in Mailspring. Enter and Space open the menu; Escape dismisses it and returns focus. Tools remains hidden after reload when disabled.
+
+Short meeting lists no longer reserve a large blank area. Longer lists scroll within the saved limit or 35% of the window height. Scrolling down to Actions, back to the calendar, and dragging the outer scrollbar were checked. The compact Actions layout was also checked at 300px, 400px and 460px widths in light and dark styles; the synthetic three-action layout used about 19–20% less height than before.
+
+Saved actions remained byte-for-byte unchanged during the live checks. No email was sent and no calendar event was changed. Real mailbox captures are excluded from the repository and release packages.
+
+## Remaining limits
+
+The separate Mac menu-bar icon issue from 0.1.14 remains unresolved. This release does not add automatic plugin updates. The existing installer and manual reload remain the update path. Hiding Tools clears its current inputs and results. Grouped mail continues to reset to enabled when the plugin starts. The converter and quoted-history browser suites were last run for 0.1.13 and were not repeated for this release.
+
+---
+
 # Today + Actions 0.1.14 validation
 
 Validated on **16 October 2026** against **Mailspring 1.26.0 on macOS Apple Silicon**. Midnight remains at 1.0.4.

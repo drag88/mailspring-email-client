@@ -78,7 +78,7 @@
   .taa-height-setting { display: block; }
   .taa-height-setting > span { display: flex; justify-content: space-between; color: @text-color-subtle; margin-bottom: 4px; }
   .taa-height-setting input { width: 100%; accent-color: @component-active-color; }
-  .taa-event-viewport { overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; overscroll-behavior: contain; padding-right: 4px; }
+  .taa-event-viewport { overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; padding-right: 4px; }
   .taa-compact {
     .taa-event { padding: 9px 0; }
     .taa-event-title { margin: 4px 0 2px; line-height: 1.35; }
@@ -115,19 +115,22 @@
   .taa-disclosure.taa-expanded { transform: rotate(90deg); }
   .taa-action-count { font-size: @font-size-smaller; font-weight: 400; color: @text-color-subtle; }
   .taa-actions-content[hidden], .taa-calendar-content[hidden] { display: none; }
-  .taa-filters { display: flex; gap: 3px; margin: 14px 0; padding: 3px; border: 1px solid @border-color-divider; border-radius: 7px; background: @background-secondary; }
-  .taa-filter { flex: 1; border: 1px solid transparent; border-radius: 4px; padding: 6px 7px;
+  .taa-actions { font-size: @font-size-small; }
+  .taa-actions h3 { margin: 9px 0 4px; }
+  .taa-filters { display: flex; gap: 3px; margin: 8px 0; padding: 2px; border: 1px solid @border-color-divider; border-radius: 6px; background: @background-secondary; }
+  .taa-filter { flex: 1; min-height: 26px; border: 1px solid transparent; border-radius: 4px; padding: 3px 5px;
     color: @text-color-subtle; background: transparent; font-size: @font-size-smaller; white-space: nowrap; }
   .taa-filter.active { color: @text-color; border-color: @border-color-divider; background: @background-primary; }
   .taa-overdue { color: @color-error; }
-  .taa-action-card { padding: 11px 0; border-bottom: 1px solid @border-color-divider; }
+  .taa-action-card { padding: 6px 0; border-bottom: 1px solid @border-color-divider; }
   .taa-action-top { display: flex; gap: 8px; align-items: flex-start; }
   .taa-action-top input { margin-top: 2px; accent-color: @component-active-color; flex-shrink: 0; }
-  .taa-action-title { font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
+  .taa-action-title { min-width: 0; font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
   .taa-done { color: @text-color-subtle; text-decoration: line-through; }
-  .taa-action-meta { padding-left: 22px; color: @text-color-subtle; font-size: @font-size-smaller; margin: 5px 0; }
-  .taa-action-notes { padding-left: 22px; margin: 5px 0; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .taa-action-controls { display: flex; justify-content: space-between; align-items: center; padding-left: 22px; font-size: @font-size-smaller; }
+  .taa-action-meta { padding-left: 22px; color: @text-color-subtle; font-size: @font-size-smaller; margin: 2px 0; }
+  .taa-action-notes { padding-left: 22px; margin: 3px 0; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .taa-action-controls { display: flex; flex-wrap: wrap; gap: 2px 8px; justify-content: space-between; align-items: center; padding-left: 22px; font-size: @font-size-smaller; }
+  .taa-action-controls .taa-link, .taa-reminder-info .taa-link { min-height: 24px; padding: 2px 0; font-size: inherit; }
   .taa-empty { color: @text-color-subtle; font-size: @font-size-small; line-height: 1.65; padding: 14px 0; }
   .taa-empty p { margin: 0 0 6px; }
   .taa-notice { background: @background-secondary; padding: 10px; border-radius: 6px; margin: 12px 0; line-height: 1.5; }
@@ -146,8 +149,7 @@
   .taa-editor .taa-reminder-check input { display: inline-block; width: auto; margin: 0; }
   .taa-reminder-hint { display: block; font-size: @font-size-smaller; color: @text-color-subtle; line-height: 1.5; margin-top: 6px; }
   .taa-reminder-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px;
-    align-items: center; font-size: @font-size-smaller; color: @text-color-subtle; margin: 8px 0 12px; }
-  .taa-reminder-info .taa-link { font-size: inherit; }
+    align-items: center; font-size: @font-size-smaller; color: @text-color-subtle; margin: 4px 0 6px; }
   .taa-action-reminder { padding-left: 22px; font-size: @font-size-smaller; color: @text-color-subtle; margin: 7px 0; line-height: 1.5; }
   .taa-reminder-due { color: @text-color; font-weight: 600; }
   .taa-snooze-controls { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 3px; }
@@ -155,7 +157,7 @@
   .taa-form-controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
   .taa-secondary { border: 1px solid @border-color-divider; color: @text-color; background: transparent; border-radius: 5px; padding: 6px 10px; }
 }
-.taa-toggle { margin: 0 6px; font-size: @font-size-small; }
+.taa-toggle { order: 99; margin: 0 6px; font-size: @font-size-small; }
 .taa-add-button { font-size: @font-size-small; }
 .taa-google-meeting {
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;

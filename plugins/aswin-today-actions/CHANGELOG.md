@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.15 — 22 October 2026
+
+- Replace three toolbar controls with one Extras menu beside the contact-panel icon. Checked choices control Today + Actions, Tools and Grouped mail.
+- Let meetings grow with their contents, up to the saved height limit or 35% of the window height.
+- Allow scrolling to continue into the surrounding pane when the meeting list reaches either end.
+- Reduce Actions spacing and control sizes while keeping long titles and notes readable.
+- Start Tools hidden and remember its visibility across reloads. Hiding Tools clears converter inputs and results.
+- Support Enter and Space to open Extras, and Escape to close it.
+- Retain existing local actions, reminders and display preferences. The previously reported missing Mac menu-bar icon remains unresolved.
+
 ## 0.1.14 — 16 October 2026
 
 - Add a Mac menu bar preview with unread inbox conversations across connected accounts and the rest of today's synced agenda.

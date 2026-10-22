@@ -18,6 +18,7 @@ const MeetingResizer = createMeetingResizer(React);
 const { ReminderScheduler, localReminderValue, reminderISO, suggestedReminder, snoozeInstant, reminderDue } = require('./reminders');
 const { createReaderConverters } = require('./reader-converters');
 const ReaderConverters = createReaderConverters(React);
+const TOOLS_VISIBLE_KEY = 'mailspring.aswinTodayActionsToolsVisible';
 const h = React.createElement;
 let runtime = null;
 
@@ -110,15 +111,38 @@ async function openThread(source) {
   notify();
 }
 
-class SidebarToggle extends React.Component {
+class ExtrasMenu extends React.Component {
   render() {
-    return h('button', { className: 'btn btn-toolbar taa-toggle', title: 'Show or hide Today + Actions',
-      onClick: () => runtime && api.Actions.toggleWorkspaceLocationHidden(runtime.layout.location),
-      'aria-label': 'Show or hide Today and Actions' }, 'Today + Actions');
+    return h('button', { type: 'button', className: 'btn btn-toolbar taa-toggle',
+      'aria-label': 'Extras', 'aria-haspopup': 'menu', title: 'Choose which extras to show',
+      onKeyDown: event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault(); event.stopPropagation(); event.currentTarget.click();
+      },
+      onClick: () => {
+        const current = runtime;
+        if (!current?.layout) return;
+        const { Menu } = require(path.join(AppEnv.getLoadSettings().resourcePath, 'node_modules/@electron/remote'));
+        const grouped = current.groupedMail;
+        Menu.buildFromTemplate([
+          { label: 'Today + Actions', type: 'checkbox', checked: !api.WorkspaceStore.isLocationHidden(current.layout.location),
+            click: () => { if (runtime === current) api.Actions.toggleWorkspaceLocationHidden(current.layout.location); } },
+          { label: 'Tools', type: 'checkbox', checked: AppEnv.config.get(TOOLS_VISIBLE_KEY) === true,
+            click: () => {
+              if (runtime !== current) return;
+              const show = AppEnv.config.get(TOOLS_VISIBLE_KEY) !== true;
+              AppEnv.config.set(TOOLS_VISIBLE_KEY, show);
+              if (show) api.ComponentRegistry.register(ReaderConverters, { location: api.WorkspaceStore.Location.MessageList });
+              else api.ComponentRegistry.unregister(ReaderConverters);
+            } },
+          { label: 'Grouped mail', type: 'checkbox', checked: grouped?.isEnabled() || false, enabled: !!grouped,
+            click: () => { if (runtime === current) grouped?.setEnabled(!grouped.isEnabled()); } },
+        ]).popup({});
+      } }, 'Extras ▾');
   }
 }
-SidebarToggle.displayName = 'AswinTodayActionsToggle';
-SidebarToggle.containerRequired = false;
+ExtrasMenu.displayName = 'AswinExtrasMenu';
+ExtrasMenu.containerRequired = false;
 
 class AddActionButton extends React.Component {
   render() {
@@ -262,16 +286,16 @@ function CalendarSection({ feed }) {
     runtime.meetingDisplayOpen ? h('div', { id: 'taa-meeting-display', className: 'taa-meeting-display', role: 'group', 'aria-label': 'Meeting display settings' },
       h('label', { className: 'taa-compact-setting' }, h('input', { type: 'checkbox', checked: display.compact,
         onChange: event => updateDisplay({ compact: event.target.checked }) }), 'Compact meetings'),
-      h('label', { className: 'taa-height-setting' }, h('span', null, 'Meeting list height', h('output', null, `${display.height}px`)),
+      h('label', { className: 'taa-height-setting' }, h('span', null, 'Meeting list height limit', h('output', null, `${display.height}px`)),
         h('input', { type: 'range', min: MIN_HEIGHT, max: MAX_HEIGHT, step: 1, value: display.height,
-          'aria-label': 'Meeting list height', 'aria-valuetext': `${display.height} pixels`,
+          'aria-label': 'Meeting list height limit', 'aria-valuetext': `Up to ${display.height} pixels, limited to fit the window`,
           onChange: event => updateDisplay({ height: event.target.value }) }))) : null,
     feed?.error || runtime?.calendarError ? h('div', { className: 'taa-notice', role: 'status' }, feed?.error || runtime.calendarError) :
       feed?.loading ? h('p', { className: 'taa-muted' }, 'Loading your calendar…') :
       !events.length ? h('div', { className: 'taa-empty' },
         h('p', null, feed?.calendars.length ? `No events ${isToday ? 'today' : 'on this day'} in your visible calendars.` : 'No calendars have synced yet.'),
         h('p', { className: 'taa-muted' }, 'Open Calendar to check sync or choose visible calendars.')) :
-      h('div', { className: 'taa-event-viewport', style: { height: display.height, maxHeight: display.height }, role: 'region',
+      h('div', { className: 'taa-event-viewport', style: { maxHeight: `min(${display.height}px, 35vh)` }, role: 'region',
         'aria-label': 'Meetings list', tabIndex: 0 }, h('ol', { className: 'taa-event-list' }, events.map(event => {
         const past = !event.isAllDay && event.end <= nowUnix;
         const active = !event.isAllDay && event.start <= nowUnix && event.end > nowUnix;
@@ -454,9 +478,10 @@ function activate() {
     runtime.calendarError = 'Calendar integration is unavailable in this Mailspring version. Actions still work.';
   }
   api.ComponentRegistry.register(TodayActionsSidebar, { location: layout.location });
-  api.ComponentRegistry.register(SidebarToggle, { location: api.WorkspaceStore.Sheet.Global.Toolbar.Right });
+  api.ComponentRegistry.register(ExtrasMenu, { location: api.WorkspaceStore.Sheet.Global.Toolbar.Right });
   api.ComponentRegistry.register(AddActionButton, { role: 'ThreadActionsToolbarButton' });
-  api.ComponentRegistry.register(ReaderConverters, { location: api.WorkspaceStore.Location.MessageList });
+  if (AppEnv.config.get(TOOLS_VISIBLE_KEY) === true)
+    api.ComponentRegistry.register(ReaderConverters, { location: api.WorkspaceStore.Location.MessageList });
   try { runtime.groupedMail = installGroupedMail(api, AppEnv, runtime.store); }
   catch (error) { console.warn('Today + Actions: grouped mail is unavailable', error); }
   try { runtime.mailSidebar = installMailSidebar(api, AppEnv); }
@@ -474,7 +499,7 @@ function deactivate() {
     return;
   }
   api.ComponentRegistry.unregister(TodayActionsSidebar);
-  api.ComponentRegistry.unregister(SidebarToggle);
+  api.ComponentRegistry.unregister(ExtrasMenu);
   api.ComponentRegistry.unregister(AddActionButton);
   api.ComponentRegistry.unregister(ReaderConverters);
   runtime.macMenu?.cleanup();

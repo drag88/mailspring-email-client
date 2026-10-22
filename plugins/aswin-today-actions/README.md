@@ -1,18 +1,18 @@
 # Today + Actions — Mailspring plugin
 
-Version **0.1.14** · Tested with **Mailspring 1.26.0 on macOS**.
+Version **0.1.15** · Tested with **Mailspring 1.26.0 on macOS**.
 
 A calendar and email-linked action pane, grouped mail, a collapsible mailbox sidebar, and currency/timezone tools below the email reader.
 
-Version 0.1.14 adds a Mac menu bar preview with an unread inbox count and the rest of today's agenda. The icon remained invisible during live validation on the development Mac. Existing calendar, actions and converter tools remain available in the main window.
+Version 0.1.15 puts Today + Actions, Tools and Grouped mail under one right-aligned Extras menu. Meetings use only the space they need, Actions uses less space, and scrolling continues between the meeting list and the rest of the pane.
 
 ## Install on macOS
 
-1. Download `aswin-today-actions-0.1.14.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.14) and extract it.
+1. Download `aswin-today-actions-0.1.15.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.15) and extract it.
 2. In Mailspring, choose **Developer → Install a Plugin…**.
 3. Select the **aswin-today-actions** folder that directly contains `package.json`.
 4. Choose **Developer → Reload**. If the plugin does not appear, quit and reopen Mailspring.
-5. Use the **Today + Actions** toolbar button to show or hide the right pane.
+5. Open **Extras** in the top toolbar and choose **Today + Actions** to show or hide the right pane. The same menu controls **Tools** and **Grouped mail**; checked items are enabled.
 
 No terminal commands, build step, npm install, or Mailspring ID are required.
 
@@ -28,7 +28,7 @@ Browsing another day in the sidebar does not change this menu. Open Inbox, Open 
 
 - **Currency:** enter an amount (plain decimals or comma grouping; negative refunds are supported), choose currencies, and click Convert. Supports 20 common currencies. Shows an indicative daily Frankfurter rate with its observation date, excluding bank fees. Requires internet for different currencies; same-currency calculations work offline. Inputs and results reset on reload. Amounts up to 1 trillion are supported; this is an approximate converter, not accounting software.
 - **Timezone:** choose a date/time and source/destination IANA timezones. Results include the destination date and UTC offset. Now uses the selected source timezone. Swap retains the represented instant for ordinary times. DST gaps are rejected; repeated times require an explicit earlier/later choice. Uses the app's bundled timezone rules and works offline.
-- **Tools:** collapse the panel with its heading; selecting Currency or Timezone expands it again. The panel remains outside the email scroll area and wraps on narrower reader widths.
+- **Tools:** choose **Extras → Tools** to show or hide the entire converter strip. It starts hidden and remembers your choice across reloads. Within the strip, its heading collapses the inputs; selecting Currency or Timezone expands them again. Hiding the strip resets converter inputs and results. The panel remains outside the email scroll area and wraps on narrower reader widths.
 
 ## Mail organisation
 
@@ -40,7 +40,7 @@ Click **Collapse** above the mailbox list to use the icon rail. Click the top ch
 
 - **Grouped mail:** email-linked open actions appear in Needs action / follow-up. Gmail stars appear in Starred unless that email already has an open action. Other mail uses Today, Yesterday or Earlier based on the latest received message and your Mac's local calendar day; Sent uses the latest sent message. New replies update the date group. Empty sections are hidden and each section is newest first. Completing all actions linked to an email returns it to Starred or its date section. Starred mail is promoted across the entire selected folder, including older mail outside the visible page.
 - **Follow up on an email:** select it, click + Action and save an open action; choose Remind me separately if you want a notification. This view uses Today + Actions follow-ups, not Mailspring Pro's send-reminder metadata.
-- **Grouped mail / Recent mail toolbar button:** toggles grouping for this session. Search and special subscription views retain their normal semantics. Grouping resumes by default on restart.
+- **Extras → Grouped mail:** toggles grouping for this session. Uncheck it for the standard chronological list. Search and special subscription views retain their normal semantics. Grouping resumes by default on restart.
 
 ## Calendar and meetings
 
@@ -48,8 +48,8 @@ Click **Collapse** above the mailbox list to use the icon rail. Click the top ch
 - **Month calendar:** use the arrows to browse months, click a date to view its meetings, or click Today to return to the current day. Actions remain a personal due-date tracker independently of the selected calendar date.
 - **Calendar:** meetings for the selected day, including all-day and recurring events. Click a meeting row to expand its notes and attendees. Past meetings are dimmed. Ongoing meetings show “Now”. Times follow your Mac's timezone, displayed above the list. Drag the left edge to resize the pane.
 - **Rooms / location:** the room remains visible even when a meeting also has a Join button. Synced room resource attendees are included, excluding declined resources. The plugin enriches an in-memory ICS copy only, respecting recurrence exceptions; it does not change room bookings. Expand a row to see long room/title text in full. Rooms absent from the synced invitation cannot be reconstructed.
-- **Display:** opens **Compact meetings** and a **Meeting list height** slider (180–720px, default 320px). Compact rows reduce padding, shorten long titles and omit repeated calendar email labels while preserving text size. Turn compact off for more spacing. The list scrolls independently when it exceeds your chosen height, leaving Actions below it. Preferences are saved in Mailspring's local configuration and survive reloads. The overall sidebar width can still be resized by its left edge.
-- **Divider above Actions:** drag its centre grip up to squeeze the meetings list or down to expand it. The height updates continuously and saves when released. Double-click resets to 320px. When focused, Up/Down adjust by 20px; Home/End choose the height limits. The divider appears while the meetings section is open and contains events. The meeting list uses a fixed chosen height so the divider moves even when the day's events are short.
+- **Display:** opens **Compact meetings** and a **Meeting list height limit** slider (180–720px, default 320px). Compact rows reduce padding, shorten long titles and omit repeated calendar email labels while preserving text size. Turn compact off for more spacing. The list grows with its contents, up to your chosen limit or 35% of the window height, whichever is smaller. Longer lists scroll independently, leaving room for Actions below. Preferences are saved in Mailspring's local configuration and survive reloads. The overall sidebar width can still be resized by its left edge.
+- **Divider above Actions:** drag its centre grip to change the meeting list height limit. The limit updates continuously and saves when released. Double-click resets to 320px. When focused, Up/Down adjust by 20px; Home/End choose the height limits. The divider appears while the meetings section is open and contains events. Raising the limit does not add empty space when the day's meetings are short.
 - **Join meeting:** opens recognised HTTPS Google Meet, Microsoft Teams, Zoom or Webex links in your browser. It appears whenever the synced invitation includes a supported link, including past meetings. If none is present, meeting details explain that no online link was supplied. Conferencing metadata is read from an in-memory ICS copy; no calendar data is edited.
 - **Open Calendar:** opens Mailspring's native calendar and its normal sync flow. The sidebar reads calendars already synced by Mailspring; it doesn't establish a new Google connection. Calendar visibility follows the calendars selected in the native calendar window.
 ## Actions and reminders

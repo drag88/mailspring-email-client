@@ -2,21 +2,21 @@
 
 Calendar, email-linked actions and conversion tools for Mailspring, with a matching Midnight theme.
 
-Tested with **Mailspring 1.26.0 on macOS**. Download the packages from the [v0.1.14 release](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.14).
+Tested with **Mailspring 1.26.0 on macOS**. Download the packages from the [v0.1.15 release](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.15).
 
 ## Packages
 
 | Package | Version | Purpose |
 | --- | --- | --- |
-| [Today + Actions](plugins/aswin-today-actions/README.md) | 0.1.14 | Calendar and actions in the right pane; currency and timezone tools below the email reader; grouped mail and a collapsible mailbox sidebar. |
+| [Today + Actions](plugins/aswin-today-actions/README.md) | 0.1.15 | Calendar and actions in the right pane; currency and timezone tools below the email reader; grouped mail and a collapsible mailbox sidebar. |
 | [Midnight](themes/aswin-midnight/README.md) | 1.0.4 | Charcoal app styling, readable email colours and collapsible quoted history. |
 
 The packages extend the existing Mailspring app. They can be installed separately.
 
 ## Install or update
 
-1. Download and extract [Today + Actions](https://github.com/drag88/mailspring-email-client/releases/download/v0.1.14/aswin-today-actions-0.1.14.zip). In Mailspring, choose **Developer → Install a Plugin…** and select the extracted `aswin-today-actions` folder containing `package.json`.
-2. To use Midnight, download and extract the [theme package](https://github.com/drag88/mailspring-email-client/releases/download/v0.1.14/aswin-midnight-1.0.4.zip). Install `aswin-midnight` through the same installer, then choose **Preferences → Appearance → Change Theme… → Midnight — Aswin**.
+1. Download and extract [Today + Actions](https://github.com/drag88/mailspring-email-client/releases/download/v0.1.15/aswin-today-actions-0.1.15.zip). In Mailspring, choose **Developer → Install a Plugin…** and select the extracted `aswin-today-actions` folder containing `package.json`.
+2. To use Midnight, download and extract the [theme package](https://github.com/drag88/mailspring-email-client/releases/download/v0.1.15/aswin-midnight-1.0.4.zip). Install `aswin-midnight` through the same installer, then choose **Preferences → Appearance → Change Theme… → Midnight — Aswin**.
 3. Choose **Developer → Reload** after updating. If a package does not appear, quit and reopen Mailspring.
 
 Installation requires no terminal commands or build step. Existing local actions and reminder schedules are retained. Updates are installed manually.
@@ -27,7 +27,8 @@ If using a source checkout, select `plugins/aswin-today-actions` and `themes/asw
 
 - **Mac menu bar preview:** unread inbox count and the rest of today's agenda. The icon remained invisible during live validation on the development Mac; this release does not resolve that symptom.
 
-- **Calendar and meetings:** month navigation, daily agenda, room details, meeting links, compact rows and a resizable meeting list. **New meeting** opens a Google Calendar draft for guests, Google Meet and room booking.
+- **Calendar and meetings:** month navigation, daily agenda, room details, meeting links and a meeting list that grows with its contents and scrolls on busy days. **New meeting** opens a Google Calendar draft for guests, Google Meet and room booking.
+- **Extras:** one menu beside the contact-panel icon controls Today + Actions, Tools and Grouped mail. Tools starts hidden and remembers your choice.
 - **Actions and reminders:** create standalone or email-linked actions with an owner, due date, notes and optional reminders. Open the source email, complete actions or snooze reminders.
 - **Mail organisation:** group email into Needs action / follow-up, Starred, Today, Yesterday and Earlier. Collapse the mailbox sidebar to an icon rail while retaining native folder controls.
 - **Currency:** choose from 20 common currencies and convert using a dated, indicative daily rate. Different-currency conversion requires internet; only currency codes are sent to Frankfurter.
@@ -60,6 +61,12 @@ To run the quoted-history browser checks, install Vercel Agent Browser and run:
 npm --prefix themes/aswin-midnight run test:browser
 ```
 
-Version 0.1.14 passed all 68 repository unit tests and runtime syntax checks. Independent review found no remaining code blockers. The 10 converter browser checks, 13 quoted-history checks, native React/calendar integration and light/dark stylesheet compilation were last verified for v0.1.13. The new menu's internal count and data were checked in Mailspring, but visible icon placement and popup clicks remain unresolved. The native integration and converter preview harnesses use the installed Mailspring bundle and are not included in this repository.
+Version 0.1.15 passed all 68 repository unit tests, six meeting-sizing checks and five scrolling browser checks, runtime syntax checks, native React/calendar integration, and light/dark stylesheet compilation. Extras, all three choices, keyboard opening/dismissal and toolbar alignment were checked in Mailspring. The separate Mac menu-bar icon remains unresolved. The native integration and converter preview harnesses use the installed Mailspring bundle and are not included in this repository. See the validation notes for the checks repeated for this release.
+
+The meeting-sizing and scrolling checks require Python Playwright and an installed Google Chrome:
+
+```sh
+python3 plugins/aswin-today-actions/test/scroll.browser.py
+```
 
 See [plugin validation](plugins/aswin-today-actions/VALIDATION.md), [theme validation](themes/aswin-midnight/VALIDATION.md) and the [changelog](plugins/aswin-today-actions/CHANGELOG.md) for dated evidence and coverage limits.
