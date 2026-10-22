@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.16 — 22 October 2026
+
+- Check for plugin updates once a day on macOS, with a manual check in Extras.
+- Show an update notice with Install update and Later. Reload Mailspring after a successful installation.
+- Verify the GitHub release, bundle checksum and per-file hashes before replacing the plugin.
+- Preserve Mailspring settings, actions and reminders. Keep the previous plugin in the Trash and restore it if the package swap fails.
+- Add a release builder for manual downloads, the in-app update bundle and checksums.
+- Existing users need to install this version manually once to enable later in-app updates.
+
 ## 0.1.15 — 22 October 2026
 
 - Replace three toolbar controls with one Extras menu beside the contact-panel icon. Checked choices control Today + Actions, Tools and Grouped mail.

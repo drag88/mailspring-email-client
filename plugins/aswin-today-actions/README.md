@@ -1,20 +1,30 @@
 # Today + Actions — Mailspring plugin
 
-Version **0.1.15** · Tested with **Mailspring 1.26.0 on macOS**.
+Version **0.1.16** · Tested with **Mailspring 1.26.0 on macOS**.
 
 A calendar and email-linked action pane, grouped mail, a collapsible mailbox sidebar, and currency/timezone tools below the email reader.
 
-Version 0.1.15 puts Today + Actions, Tools and Grouped mail under one right-aligned Extras menu. Meetings use only the space they need, Actions uses less space, and scrolling continues between the meeting list and the rest of the pane.
+Version 0.1.16 adds update checks and one-click installation on macOS. The Extras menu, compact Actions layout and dynamic meeting list from 0.1.15 are retained.
 
 ## Install on macOS
 
-1. Download `aswin-today-actions-0.1.15.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.15) and extract it.
+1. Download `aswin-today-actions-0.1.16.zip` from the [release page](https://github.com/drag88/mailspring-email-client/releases/tag/v0.1.16) and extract it.
 2. In Mailspring, choose **Developer → Install a Plugin…**.
 3. Select the **aswin-today-actions** folder that directly contains `package.json`.
 4. Choose **Developer → Reload**. If the plugin does not appear, quit and reopen Mailspring.
 5. Open **Extras** in the top toolbar and choose **Today + Actions** to show or hide the right pane. The same menu controls **Tools** and **Grouped mail**; checked items are enabled.
 
 No terminal commands, build step, npm install, or Mailspring ID are required.
+
+## In-app updates on macOS
+
+Install version 0.1.16 manually once to enable in-app updates. While Mailspring is open, the plugin checks its public GitHub releases at most once every 24 hours. **Extras → Check for updates** checks immediately.
+
+When a newer release is available, click **Install update** in the notice below the email reader, or choose the install option in Extras. Mailspring reloads after installation. **Later** dismisses the notice; the install option remains in Extras.
+
+The installer checks the release identity, SHA-256 checksum and individual file hashes, stages the new plugin, and replaces only `packages/aswin-today-actions`. Mailspring settings, saved actions and reminders remain in their existing locations. A copy of the old plugin is retained in the Mac's Trash. If the package swap fails, the installer attempts to restore the previous plugin automatically.
+
+Downloads require internet and begin only after you click Install. The updater adds no helper running outside Mailspring. It updates Today + Actions only; Midnight remains a separate theme package. Releases with a changed Mailspring compatibility range require manual installation. Windows and Linux do not run these update checks.
 
 ## Mac menu bar
 
@@ -72,7 +82,7 @@ Actions are a personal tracker. Typing another person's name in Owner does not n
 
 Currency conversion requests a daily rate from [Frankfurter](https://frankfurter.dev/) when you click **Convert** with different currencies. Only the two currency codes are sent. Amounts, mailbox data, account details and actions stay on the Mac. Requests omit cookies, stop when the inputs change or the panel is removed, and time out after 15 seconds.
 
-Timezone conversion runs locally. The plugin uses Mailspring's bundled React and existing calendar/database APIs. It adds no analytics, AI service or background downloads.
+Timezone conversion runs locally. The plugin uses Mailspring's bundled React and existing calendar/database APIs. It adds no analytics or AI service. Update checks contact the public GitHub release API; update files are downloaded from GitHub only when installation is requested. No mailbox data, actions, account details or converter inputs are sent to GitHub.
 
 Action titles, owners, due dates, notes and source thread/account IDs and subjects are saved to:
 

@@ -159,6 +159,16 @@
 }
 .taa-toggle { order: 99; margin: 0 6px; font-size: @font-size-small; }
 .taa-add-button { font-size: @font-size-small; }
+.taa-update-notice {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; padding: 8px 14px;
+  border-top: 1px solid @border-color-divider; background: @background-secondary;
+  color: @text-color; font: @font-size-small @font-family;
+  > span { flex: 1; min-width: 160px; overflow-wrap: anywhere; }
+  button { font: inherit; min-height: 26px; padding: 3px 8px; border: 1px solid @border-color-divider;
+    border-radius: 4px; background: @background-primary; color: @text-color-link; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  button:focus-visible { outline: 2px solid @component-active-color; outline-offset: 2px; }
+}
 .taa-google-meeting {
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;
   padding: 10px 18px; color: @text-color; background: @background-primary;

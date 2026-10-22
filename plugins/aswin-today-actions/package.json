@@ -1,7 +1,7 @@
 {
   "name": "aswin-today-actions",
   "displayName": "Today + Actions",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "A local calendar and email-linked action sidebar for Mailspring.",
   "main": "./lib/main.js",
   "license": "MIT",

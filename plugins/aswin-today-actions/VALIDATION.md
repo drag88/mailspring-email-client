@@ -1,3 +1,25 @@
+# Today + Actions 0.1.16 validation
+
+Validated on **22 October 2026** against **Mailspring 1.26.0 on macOS Apple Silicon**. Midnight remains at 1.0.4.
+
+## Updater checks
+
+- All 75 repository unit tests pass: 66 plugin tests and 9 theme tests. Seven new updater tests cover stable/newer releases, pinned repository URLs, GitHub asset redirects, checksums and per-file hashes, unsafe/duplicate paths, compatibility ranges and installed package identity.
+- Successful installation and an injected failed package swap leave fixture settings and saved actions byte-for-byte unchanged. A failed swap restores the old plugin directory.
+- The native React/calendar harness checks manual update checks, the up-to-date notice, the available-version prompt, Later, the Extras install choice and reload after installation. This local harness uses the installed app bundle; unrelated native integrations are mocked or unavailable.
+- A real HTTPS download of the previous release's checksum file succeeds through GitHub's redirect. The updater uses Node HTTPS with normal certificate validation, no login credentials and bounded downloads.
+- Release packaging creates manual ZIPs, a JSON update bundle and SHA256SUMS.txt. The JSON bundle avoids archive extraction in the installed updater.
+
+## Scope and limits
+
+Update checks and installation are enabled only on macOS. Existing users must install this updater-enabled version manually once. The installer changes the plugin directory only and keeps a rollback copy in the Trash; Mailspring settings and the separate actions/reminder data directory are not replaced. A changed Mailspring compatibility range requires manual installation.
+
+The checksum verifies downloaded bytes from the fixed public GitHub repository. It is not an independent publisher signature. The installer restores the previous directory when a swap operation fails; abrupt termination between directory renames may require restoring the retained Trash copy. The separate Mac menu-bar icon issue remains unresolved.
+
+Earlier UI and browser evidence is retained below.
+
+---
+
 # Today + Actions 0.1.15 validation
 
 Validated on **22 October 2026** against **Mailspring 1.26.0 on macOS Apple Silicon**. Midnight remains at 1.0.4.

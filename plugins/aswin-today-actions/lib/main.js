@@ -18,7 +18,11 @@ const MeetingResizer = createMeetingResizer(React);
 const { ReminderScheduler, localReminderValue, reminderISO, suggestedReminder, snoozeInstant, reminderDue } = require('./reminders');
 const { createReaderConverters } = require('./reader-converters');
 const ReaderConverters = createReaderConverters(React);
+const { checkForUpdate, installUpdate } = require('./plugin-updater');
+const VERSION = require('../package.json').version;
 const TOOLS_VISIBLE_KEY = 'mailspring.aswinTodayActionsToolsVisible';
+const UPDATE_CHECK_KEY = 'mailspring.aswinTodayActionsLastUpdateCheck';
+const UPDATE_INTERVAL = 24 * 60 * 60 * 1000;
 const h = React.createElement;
 let runtime = null;
 
@@ -29,6 +33,44 @@ function sourceFromThread(thread) {
 }
 
 function notify() { runtime?.events.emit('change'); }
+async function checkUpdates(manual = false) {
+  const current = runtime, state = current?.update;
+  if (!state || state.busy || state.checking) return;
+  const now = Date.now(), last = Number(AppEnv.config.get(UPDATE_CHECK_KEY)) || 0;
+  if (!manual && last <= now && now - last < UPDATE_INTERVAL) return;
+  state.checking = true;
+  if (manual) { state.dismissed = false; state.message = 'Checking for updates…'; }
+  current.updateAbort = new AbortController(); notify();
+  try {
+    try { AppEnv.config.set(UPDATE_CHECK_KEY, now); } catch (_) { /* The current check can still run. */ }
+    const available = await checkForUpdate(VERSION, { signal: current.updateAbort.signal });
+    if (runtime !== current) return;
+    state.available = available;
+    state.message = available ? '' : manual ? `You’re up to date (${VERSION}).` : '';
+    if (available) state.dismissed = false;
+  } catch (error) {
+    if (runtime === current && manual) state.message = `Could not check for updates. ${error.message}`;
+  } finally {
+    if (runtime === current) { state.checking = false; current.updateAbort = null; notify(); }
+  }
+}
+async function installAvailableUpdate() {
+  const current = runtime, state = current?.update;
+  if (!state?.available || state.busy || state.checking) return;
+  state.busy = true; state.dismissed = false; state.message = 'Installing update…';
+  current.updateAbort = new AbortController(); notify();
+  try {
+    await installUpdate(state.available, { packageDir: path.resolve(__dirname, '..'),
+      configDir: AppEnv.getLoadSettings().configDirPath,
+      backupDir: path.join(require('os').homedir(), '.Trash'), signal: current.updateAbort.signal });
+    if (runtime === current) AppEnv.reload();
+  } catch (error) {
+    if (runtime === current) { state.message = `Update could not be installed. ${error.message}`; state.busy = false; }
+  } finally {
+    if (runtime === current) { current.updateAbort = null; notify(); }
+  }
+}
+function dismissUpdateNotice() { if (runtime?.update) { runtime.update.dismissed = true; notify(); } }
 function showPane() {
   if (runtime && api.WorkspaceStore.isLocationHidden(runtime.layout.location))
     api.Actions.toggleWorkspaceLocationHidden(runtime.layout.location);
@@ -137,12 +179,36 @@ class ExtrasMenu extends React.Component {
             } },
           { label: 'Grouped mail', type: 'checkbox', checked: grouped?.isEnabled() || false, enabled: !!grouped,
             click: () => { if (runtime === current) grouped?.setEnabled(!grouped.isEnabled()); } },
+          ...(current.update ? [{ type: 'separator' }, {
+            label: current.update.busy ? 'Installing update…' : current.update.checking ? 'Checking for updates…' :
+              current.update.available ? `Install update (${current.update.available.version})` : 'Check for updates',
+            enabled: !current.update.busy && !current.update.checking,
+            click: () => { if (runtime === current) return current.update.available ? installAvailableUpdate() : checkUpdates(true); },
+          }] : []),
         ]).popup({});
       } }, 'Extras ▾');
   }
 }
 ExtrasMenu.displayName = 'AswinExtrasMenu';
 ExtrasMenu.containerRequired = false;
+
+class UpdateNotice extends React.Component {
+  componentDidMount() {
+    this.instance = runtime;
+    this.changed = () => this.forceUpdate(); this.instance?.events.on('change', this.changed);
+  }
+  componentWillUnmount() { this.instance?.events.removeListener('change', this.changed); }
+  render() {
+    const state = runtime?.update;
+    if (!state || state.dismissed || !state.available && !state.message) return null;
+    return h('section', { className: 'taa-update-notice', role: 'status', 'aria-live': 'polite', 'aria-label': 'Plugin update' },
+      h('span', null, state.message || `Update available: Today + Actions ${state.available.version}`),
+      state.available ? button('Install update', installAvailableUpdate, { disabled: state.busy || state.checking }) : null,
+      button(state.available ? 'Later' : 'Dismiss', dismissUpdateNotice, { disabled: state.busy }));
+  }
+}
+UpdateNotice.displayName = 'AswinUpdateNotice';
+UpdateNotice.containerRequired = false;
 
 class AddActionButton extends React.Component {
   render() {
@@ -459,6 +525,7 @@ function activate() {
   runtime = { layout, events: new EventEmitter(), filter: 'due', editor: null, alert: '', feed: null,
     actionsCollapsed: false, calendarCollapsed: false, editorFocusRequested: false, testNotifications: [],
     meetingDisplay: readDisplay(AppEnv.config), meetingDisplayOpen: false };
+  if (process.platform === 'darwin') runtime.update = { available: null, message: '', checking: false, busy: false, dismissed: false };
   runtime.store = new ActionStore(path.join(AppEnv.getLoadSettings().configDirPath, 'today-actions', 'actions.json'));
   runtime.store.on('change', notify);
   runtime.reminders = new ReminderScheduler(runtime.store, api.NativeNotifications, { onOpen: action => {
@@ -480,6 +547,7 @@ function activate() {
   api.ComponentRegistry.register(TodayActionsSidebar, { location: layout.location });
   api.ComponentRegistry.register(ExtrasMenu, { location: api.WorkspaceStore.Sheet.Global.Toolbar.Right });
   api.ComponentRegistry.register(AddActionButton, { role: 'ThreadActionsToolbarButton' });
+  api.ComponentRegistry.register(UpdateNotice, { location: api.WorkspaceStore.Location.MessageList });
   if (AppEnv.config.get(TOOLS_VISIBLE_KEY) === true)
     api.ComponentRegistry.register(ReaderConverters, { location: api.WorkspaceStore.Location.MessageList });
   try { runtime.groupedMail = installGroupedMail(api, AppEnv, runtime.store); }
@@ -488,6 +556,10 @@ function activate() {
   catch (error) { console.warn('Today + Actions: mailbox sidebar is unavailable', error); }
   try { runtime.macMenu = installMacMenu(api, AppEnv); }
   catch (_) { console.warn('Today + Actions: menu bar integration is unavailable.'); }
+  if (runtime.update) {
+    runtime.updateStart = setTimeout(() => checkUpdates(), 5000);
+    runtime.updateTimer = setInterval(() => checkUpdates(), UPDATE_INTERVAL);
+  }
   notify();
 }
 
@@ -502,6 +574,8 @@ function deactivate() {
   api.ComponentRegistry.unregister(ExtrasMenu);
   api.ComponentRegistry.unregister(AddActionButton);
   api.ComponentRegistry.unregister(ReaderConverters);
+  api.ComponentRegistry.unregister(UpdateNotice);
+  clearTimeout(runtime.updateStart); clearInterval(runtime.updateTimer); runtime.updateAbort?.abort();
   runtime.macMenu?.cleanup();
   runtime.mailSidebar?.cleanup();
   runtime.groupedMail?.cleanup();
